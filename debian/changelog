@@ -1,3 +1,9 @@
+itchcraft (0.2.0~bpo11+1) UNRELEASED; urgency=medium
+
+  * Work around missing Poetry package on Bullseye
+
+ -- Claudia Pellegrino <deb@cpellegrino.de>  Wed, 24 Jul 2024 18:25:11 +0200
+
 itchcraft (0.2.0) UNRELEASED; urgency=medium
 
   * Initial release
