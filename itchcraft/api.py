@@ -51,9 +51,12 @@ class Api:
         heatit.self_test()
         logger.debug('Response: %s', heatit.preheat().hex(' '))
 
-        logger.warning('Device preheating! Watch the LED closely.')
-        logger.warning('Once the LED stops blinking (and turns blue), press device on skin.')
-        logger.warning('Remove from skin once the LED turns green.')
+        logger.warning('Device now preheating!')
+        logger.warning('Watch the LED closely.')
+        logger.warning('It will blink purple, then stop')
+        logger.warning('and light up blue. Apply to skin')
+        logger.warning('and wait for LED to turn green.')
+        logger.warning('Once green, remove the device.')
 
 
 def _match_in(device: usb.core.Device) -> bool:
