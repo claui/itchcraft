@@ -1,0 +1,14 @@
+{
+  "upstream": {
+    "type": "cookiecutter-template",
+    "source": "https://github.com/claui/cookiecutter-python-package.git",
+    "commit": "19a56135ea0701203ef263f14d0c95a4de542501",
+    "replay": "cookiecutter_replay/cookiecutter-python-package.json",
+    "patches": [
+      "patches/disable-install-step.patch"
+    ],
+    "nextPatches": [
+      "patches/disable-install-step.patch"
+    ]
+  }
+}

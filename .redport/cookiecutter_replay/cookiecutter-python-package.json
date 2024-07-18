@@ -1,0 +1,47 @@
+{
+  "cookiecutter": {
+    "project_title": "Itchcraft",
+    "project_slug": "itchcraft",
+    "project_description": "Tech demo for interfacing with heat-based USB insect bite healers",
+    "first_module_name": "api",
+    "project_version": "0.1.0",
+    "project_license": "Apache-2.0",
+    "python_version": "3.9",
+    "author_full_name": "Claudia Pellegrino",
+    "author_email": "clau@tiqua.de",
+    "copyright_holder_full_name": "Claudia Pellegrino",
+    "github_username": "claui",
+    "include_executable": "y",
+    "executable_name": "itchcraft",
+    "install_dependencies_now": "y",
+    "_copy_without_render": [
+      ".redport/patches/*.patch"
+    ],
+    "_extensions": [
+      "local_extensions.CustomGlobalsExtension"
+    ],
+    "_template": "python",
+    "_output_dir": "REDACTED",
+    "_repo_dir": "REDACTED",
+    "_checkout": null
+  },
+  "_cookiecutter": {
+    "project_title": "",
+    "project_slug": "{{ cookiecutter.project_title.lower().replace(' ', '_').replace('-', '_') }}",
+    "project_description": "",
+    "first_module_name": "api",
+    "project_version": "0.1.0",
+    "project_license": [
+      "Apache-2.0",
+      "Proprietary"
+    ],
+    "python_version": "3.11",
+    "author_full_name": "Claudia Pellegrino",
+    "author_email": "clau@tiqua.de",
+    "copyright_holder_full_name": "{{ cookiecutter.author_full_name }}",
+    "github_username": "claui",
+    "include_executable": "y",
+    "executable_name": "{{ cookiecutter.project_slug.replace('_', '-') }}",
+    "install_dependencies_now": "y"
+  }
+}

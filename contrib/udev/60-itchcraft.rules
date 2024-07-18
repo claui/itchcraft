@@ -1,0 +1,2 @@
+# Kamedi’s “heat it” mosquito/insect bite healer
+ACTION=="add", ATTRS{idProduct}=="fcba", ATTRS{idVendor}=="32f9", DRIVERS=="usb", MODE="0666"
