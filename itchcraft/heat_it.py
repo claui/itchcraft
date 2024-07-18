@@ -70,7 +70,7 @@ class HeatItDevice:
     @retry(
         reraise=True,
         retry=retry_if_exception_type(usb.core.USBError),
-        stop=stop_after_attempt(5),
+        stop=stop_after_attempt(10),
         wait=wait_fixed(1),
     )
     def self_test(self) -> None:
