@@ -20,7 +20,7 @@ warn_unused_ignores = true
 
 [tool.poetry]
 name = "itchcraft"
-version = "0.1.0"
+version = "0.2.0"
 description = "Tech demo for interfacing with heat-based USB insect bite healers"
 readme = [
     "README.md",
