@@ -1,8 +1,7 @@
 """The primary module in itchcraft."""
 
-from typing import Optional
+from contextlib import ExitStack
 
-from .device import Device
 from .devices import find_devices
 from .errors import CliError
 from .logging import get_logger
@@ -26,17 +25,23 @@ class Api:
 
         logger.info('Searching for bite healer')
 
-        device: Optional[Device] = None
+        with ExitStack() as stack:
+            candidates = [
+                stack.enter_context(candidate)
+                for candidate in find_devices()
+            ]
+            if not candidates:
+                raise CliError('No bite healer connected')
 
-        for init_candidate in find_devices():
-            with init_candidate as candidate:
-                if device is not None:
-                    logger.info('Ignoring device: %s', candidate)
-                    continue
-                device = candidate
-                logger.info('Using device: %s', device)
-                device.self_test()
-                device.start_heating()
+            device = candidates[0]
+            logger.info('Using device: %s', device)
+            for rejected_device in candidates[1:]:
+                logger.info(
+                    'Ignoring additional device: %s', rejected_device
+                )
+                logger.warning(
+                    'Itchcraft can only use one device at a time.'
+                )
 
-        if device is None:
-            raise CliError('No bite healer connected')
+            device.self_test()
+            device.start_heating()
