@@ -1,5 +1,7 @@
 """USB backend management"""
 
+from abc import ABC, abstractmethod
+from collections.abc import Callable
 import array
 from typing import Optional, Union, cast
 
@@ -8,7 +10,35 @@ import usb.core  # type: ignore
 from .errors import BackendInitializationError, EndpointNotFound
 
 
-class UsbBulkTransferDevice:
+class BulkTransferDevice(ABC):
+    """Abstract base class for USB devices with two bulk transfer
+    endpoints."""
+
+    @abstractmethod
+    def bulk_transfer(
+        self,
+        request: Union[list[int], bytes, bytearray],
+    ) -> bytes:
+        """Sends a payload via USB bulk transfer and waits for a response
+        from the device.
+
+        :param `request`: the request payload from the host.
+
+        :return: the response received from the device.
+        """
+
+    @property
+    @abstractmethod
+    def product_name(self) -> Optional[str]:
+        """Product name of the device that this backend represents."""
+
+    @property
+    @abstractmethod
+    def serial_number(self) -> Optional[str]:
+        """Serial number of the device that this backend represents."""
+
+
+class UsbBulkTransferDevice(BulkTransferDevice):
     """USB device with two bulk transfer endpoints."""
 
     MAX_RESPONSE_LENGTH = 12
@@ -43,13 +73,6 @@ class UsbBulkTransferDevice:
         self,
         request: Union[list[int], bytes, bytearray],
     ) -> bytes:
-        """Sends a payload via USB bulk transfer and waits for a response
-        from the device.
-
-        :param `request`: the request payload from the host.
-
-        :return: the response received from the device.
-        """
         response = array.array('B', bytearray(self.MAX_RESPONSE_LENGTH))
         assert self.device.write(self.endpoint_out, request) == len(
             request
@@ -59,16 +82,17 @@ class UsbBulkTransferDevice:
 
     @property
     def product_name(self) -> Optional[str]:
-        """Product name of the device that this backend represents."""
-        return self.device.product
+        return cast(Optional[str], self.device.product)
 
     @property
     def serial_number(self) -> Optional[str]:
-        """Serial number of the device that this backend represents."""
-        return self.device.serial_number
+        return cast(Optional[str], self.device.serial_number)
 
 
-def _find_endpoint(interface, custom_match) -> usb.core.Endpoint:
+def _find_endpoint(
+    interface: usb.core.Interface,
+    custom_match: Callable[[usb.core.Endpoint], bool],
+) -> usb.core.Endpoint:
     if (
         endpoint := usb.util.find_descriptor(
             interface,

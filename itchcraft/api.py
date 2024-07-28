@@ -2,7 +2,7 @@
 
 from contextlib import ExitStack
 
-from .devices import find_devices
+from . import devices
 from .errors import CliError
 from .logging import get_logger
 
@@ -28,7 +28,7 @@ class Api:
         with ExitStack() as stack:
             candidates = [
                 stack.enter_context(candidate)
-                for candidate in find_devices()
+                for candidate in devices.find_devices()
             ]
             if not candidates:
                 raise CliError('No bite healer connected')

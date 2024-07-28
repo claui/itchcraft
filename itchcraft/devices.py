@@ -1,22 +1,17 @@
 """Device management and discovery"""
 
-from collections.abc import Generator
-from contextlib import (
-    AbstractContextManager,
-    contextmanager,
-)
+from collections.abc import Iterator, Generator
+from contextlib import AbstractContextManager, contextmanager
 from typing import Any, cast
 
-import usb.core
+import usb.core  # type: ignore
 
 from .backend import UsbBulkTransferDevice
 from .heat_it import HeatItDevice
 from .device import Device
 
 
-def find_devices() -> (
-    Generator[AbstractContextManager[Device], None, None]
-):
+def find_devices() -> Iterator[AbstractContextManager[Device]]:
     """Finds the first available backend"""
     devices = cast(
         Generator[usb.core.Device, Any, None],
@@ -29,5 +24,5 @@ def find_devices() -> (
 @contextmanager
 def _heat_it_device(
     usb_device: usb.core.Device,
-) -> Generator[HeatItDevice, None, None]:
+) -> Iterator[HeatItDevice]:
     yield HeatItDevice(UsbBulkTransferDevice(usb_device))

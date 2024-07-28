@@ -10,7 +10,7 @@ from tenacity import (
 )
 import usb.core  # type: ignore
 
-from .backend import UsbBulkTransferDevice
+from .backend import BulkTransferDevice
 from .device import Device
 from .logging import get_logger
 
@@ -23,9 +23,9 @@ logger = get_logger(__name__)
 class HeatItDevice(Device):
     """A heat-it bite healer, configured over USB."""
 
-    device: UsbBulkTransferDevice
+    device: BulkTransferDevice
 
-    def __init__(self, device: UsbBulkTransferDevice) -> None:
+    def __init__(self, device: BulkTransferDevice) -> None:
         self.device = device
 
     def test_bootloader(self) -> bytes:
