@@ -54,6 +54,7 @@ pdoc = ">=14.0"
 poethepoet = ">=0.24"
 pylint = ">=3.0"
 pytest = "*"
+pytest-mock = "*"
 sphinx = ">=7.1.2,<7.2.0"
 types-colorama = "*"
 
