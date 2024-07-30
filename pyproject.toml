@@ -20,20 +20,14 @@ warn_unused_ignores = true
 
 [tool.poetry]
 name = "itchcraft"
-version = "0.2.0"
+version = "0.3.0"
 description = "Tech demo for interfacing with heat-based USB insect bite healers"
-readme = [
-    "README.md",
-    "USAGE.md",
-]
-authors = [
-    "Claudia Pellegrino <clau@tiqua.de>",
-]
+readme = ["README.md", "USAGE.md"]
+authors = ["Claudia Pellegrino <clau@tiqua.de>"]
 license = "Apache-2.0"
 # See https://pypi.org/pypi?%3Aaction=list_classifiers
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Operating System :: MacOS",
     "Operating System :: POSIX :: Linux",
     "Topic :: Utilities",
 ]
@@ -41,7 +35,6 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.9"
 colorama = "*"
-dataclass-wizard = ">=0.22"
 fire = "*"
 pyusb = "^1.2.1"
 tenacity = "^8.5.0"
@@ -54,6 +47,7 @@ pdoc = ">=14.0"
 poethepoet = ">=0.24"
 pylint = ">=3.0"
 pytest = "*"
+pytest-mock = "*"
 sphinx = ">=7.1.2,<7.2.0"
 types-colorama = "*"
 

@@ -1,12 +1,12 @@
-itchcraft (0.2.0~bpo11+1) UNRELEASED; urgency=medium
+itchcraft (0.3.0~bpo11+1) UNRELEASED; urgency=medium
 
   * Work around missing Poetry package on Bullseye
   * Work around missing `myst-parser` on Bullseye
 
  -- Claudia Pellegrino <deb@cpellegrino.de>  Wed, 24 Jul 2024 18:25:11 +0200
 
-itchcraft (0.2.0) UNRELEASED; urgency=medium
+itchcraft (0.3.0) UNRELEASED; urgency=medium
 
   * Initial release
 
- -- Claudia Pellegrino <clau@tiqua.de>  Wed, 24 Jul 2024 18:23:59 +0200
+ -- Claudia Pellegrino <deb@cpellegrino.de>  Tue, 30 Jul 2024 16:00:12 +0200

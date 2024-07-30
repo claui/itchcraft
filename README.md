@@ -135,14 +135,18 @@ interesting to you for those purposes.
 
 ## Features
 
-At the moment, Itchcraft offers only a single feature:
+At the moment, Itchcraft offers the following features:
 
-- Activate your insect bite healer with the lowest and safest setting:
-  the setting for children with sensitive skin and the shortest possible
-  duration.
+- Activate a technical demonstration of your insect bite healer
+  using the command line
 
-More features, including a graphical front-end and stronger settings,
-are planned.
+- Choose a duration: short, medium, or long
+
+- Choose a generation: child or adult
+
+- Choose a skin sensitivity level: regular skin or sensitive skin
+
+A graphical front-end is planned.
 
 ## System requirements
 

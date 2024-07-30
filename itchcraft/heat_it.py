@@ -1,6 +1,7 @@
 """Backend for heat-it"""
 
-import array
+from collections.abc import Iterable
+from functools import reduce
 from typing import Optional, Union
 
 from tenacity import (
@@ -10,9 +11,11 @@ from tenacity import (
     wait_fixed,
 )
 import usb.core  # type: ignore
-import usb.util  # type: ignore
 
+from .backend import BulkTransferDevice
+from .device import Device
 from .logging import get_logger
+from .prefs import Preferences
 
 
 RESPONSE_LENGTH = 12
@@ -20,35 +23,55 @@ RESPONSE_LENGTH = 12
 logger = get_logger(__name__)
 
 
-class HeatItDevice:
-    """A heat-it bite healer, already configured over USB."""
+class HeatItDevice(Device):
+    """A heat-it bite healer, configured over USB."""
 
-    dev: usb.core.Device
-    endpoint_out: usb.core.Endpoint
-    endpoint_in: usb.core.Endpoint
+    device: BulkTransferDevice
 
-    def __init__(
-        self,
-        dev: usb.core.Device,
-        endpoint_out: usb.core.Endpoint,
-        endpoint_in: usb.core.Endpoint,
-    ) -> None:
-        self.dev = dev
-        self.endpoint_out = endpoint_out
-        self.endpoint_in = endpoint_in
+    def __init__(self, device: BulkTransferDevice) -> None:
+        self.device = device
 
     def test_bootloader(self) -> bytes:
-        """Issues a `TEST_BOOTLOADER` command and returns the response."""
+        """Issues a `TEST_BOOTLOADER` command and returns the
+        response.
+        """
         return self._command([0xFF, 0xB0], 'TEST_BOOTLOADER')
 
     def get_status(self) -> bytes:
         """Issues a `GET_STATUS` command and returns the response."""
         return self._command([0xFF, 0x02, 0x02], 'GET_STATUS')
 
-    def preheat(self) -> bytes:
-        """Issues a `PREHEATING_TIME` command and returns the response."""
+    def msg_start_heating(self, preferences: Preferences) -> bytes:
+        """Issues a `MSG_START_HEATING` command and returns the
+        response.
+        """
+
+        def duration_code() -> int:
+            return preferences.duration.value - 1
+
+        def generation_code() -> int:
+            return preferences.generation.value - 1
+
+        def skin_sensitivity_code() -> int:
+            return preferences.skin_sensitivity.value - 1
+
+        def payload() -> list[int]:
+            return [
+                0x08,
+                (generation_code() << 1) + skin_sensitivity_code(),
+                duration_code(),
+            ]
+
+        def checksum(payload: Iterable[int]) -> int:
+            return reduce(int.__add__, payload)
+
         return self._command(
-            [0xFF, 0x08, 0x00, 0x00, 0x08], 'PREHEATING_TIME'
+            [
+                0xFF,
+                *payload(),
+                checksum(payload()),
+            ],
+            'MSG_START_HEATING',
         )
 
     def _command(
@@ -58,14 +81,9 @@ class HeatItDevice:
     ) -> bytes:
         if command_name is not None:
             logger.info('Sending command: %s', command_name)
-        response = array.array('B', bytearray(RESPONSE_LENGTH))
-        assert self.dev.write(self.endpoint_out, request) == len(
-            request
-        )
-        assert (
-            self.dev.read(self.endpoint_in, response) == RESPONSE_LENGTH
-        )
-        return response.tobytes()
+        response = self.device.bulk_transfer(request)
+        assert len(response) == RESPONSE_LENGTH
+        return response
 
     @retry(
         reraise=True,
@@ -74,6 +92,33 @@ class HeatItDevice:
         wait=wait_fixed(1),
     )
     def self_test(self) -> None:
-        """Tries up to five times to test the bootloader and obtain the device status."""
+        """Tries up to five times to test the bootloader and obtain
+        the device status.
+        """
         logger.debug('Response: %s', self.test_bootloader().hex(' '))
         logger.debug('Response: %s', self.get_status().hex(' '))
+
+    def start_heating(self, preferences: Preferences) -> None:
+        """Tells the device to start heating up."""
+        logger.debug(
+            'Response: %s', self.msg_start_heating(preferences).hex(' ')
+        )
+
+        logger.info('Device now preheating.')
+        logger.info('Watch the LED closely.')
+        logger.info('It will blink purple, then stop')
+        logger.info('and light up blue.')
+
+        logger.warning('While using this app, your')
+        logger.warning('bite healer is NOT SAFE for')
+        logger.warning('use on human skin.')
+
+        logger.info('Once the LED turns green,')
+        logger.info('the tech demo has completed.')
+
+    def __str__(self) -> str:
+        name: str = (
+            self.device.product_name
+            or 'unknown, self-identifies as heat-it'
+        )
+        return f'{name}  (S/N: {self.device.serial_number})'

@@ -2,7 +2,17 @@ Source: itchcraft
 Section: python
 Priority: optional
 Maintainer: Claudia Pellegrino <clau@tiqua.de>
-Build-Depends: debhelper-compat (= 13), dh-python, flit, pandoc, python3-all, python3-sphinx
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               flit,
+               pandoc,
+               python3-all,
+               python3-colorama <!nocheck>,
+               python3-pytest <!nocheck>,
+               python3-pytest-mock <!nocheck>,
+               python3-sphinx,
+               python3-tenacity <!nocheck>,
+               python3-usb <!nocheck>
 Standards-Version: 4.5.1
 Homepage: https://github.com/claui/itchcraft
 Vcs-Browser: https://github.com/claui/itchcraft
@@ -12,6 +22,6 @@ Rules-Requires-Root: no
 
 Package: itchcraft
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}, python3-colorama, python3-fire, python3-tenacity, python3-usb
+Depends: ${python3:Depends}, ${misc:Depends}
 Description: Tech demo for interfacing with heat-based USB insect bite healers
  This package installs the utility and documentation for Python 3.
