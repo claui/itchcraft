@@ -10,34 +10,15 @@ To set up Itchcraft, you need three things:
 
 3. The Python dependency manager `poetry`.
 
-### Installing pyenv
+### Installing pyenv on Linux
 
 The Python version manager `pyenv` makes sure you can always keep
 the exact Python version required by Itchcraft,
 regardless of your system Python.
 
-#### Installing pyenv on Windows
-
-While `pyenv` doesn’t support Windows, you can use a drop-in
-replacement called `pyenv-win`.
-
-To install `pyenv-win` on Windows, go to
-[github.com/pyenv-win/pyenv-win](https://github.com/pyenv-win/pyenv-win#installation)
-and follow one of the installation methods.
-
-#### Installing pyenv on Linux
-
 To install `pyenv` on Linux or WSL2, first make sure Python 3 is
 installed. Then follow the *Basic GitHub Checkout* method described
 at [github.com/pyenv/pyenv](https://github.com/pyenv/pyenv#basic-github-checkout).
-
-#### Installing pyenv on macOS
-
-To install `pyenv` on macOS, run:
-
-```
-brew install pyenv
-```
 
 #### Checking your system-wide pyenv installation
 
@@ -69,16 +50,6 @@ Proceed after you’ve confirmed one of those to work.
 ### Installing Poetry
 
 You’ll need `poetry` to manage development dependencies and the venv.
-
-To install Poetry on Windows, use one of the
-[installation methods](https://python-poetry.org/docs/master/#installing-with-the-official-installer)
-described in Poetry’s documentation.
-
-To install Poetry on macOS, run:
-
-```
-brew install poetry
-```
 
 If you’re on Linux or WSL2, use your system package manager to
 install Poetry.
