@@ -2,6 +2,9 @@
 
 from abc import ABC, abstractmethod
 
+from .prefs import Preferences
+
+
 class Device(ABC):
     """Abstraction for a bite healer."""
 
@@ -11,5 +14,5 @@ class Device(ABC):
         functional."""
 
     @abstractmethod
-    def start_heating(self) -> None:
+    def start_heating(self, preferences: Preferences) -> None:
         """Tells the device to start heating up."""

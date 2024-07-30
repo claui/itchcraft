@@ -22,6 +22,34 @@ itchcraft COMMAND
 : Activates (i.e. heats up) a connected USB bite healer for
 : demonstration purposes.
 
+# Flags
+
+The `start` command supports the following flags:
+
+## `-d`, `--duration=DURATION`
+
+The duration of the demonstration.
+
+One of `short`, `medium`, or `long`.
+
+The default is `short`, the safest setting.
+
+## `-g`, `--generation=GENERATION`
+
+Whether the demonstration corresponds to treating an adult or a child.
+
+One of the values `child` or `adult`.
+
+The default is `child`, the safer setting of the two.
+
+## `-s`, `--skin_sensitivity=SKIN_SENSITIVITY`
+
+Whether the tech demo caters to regular or particularly sensitive skin.
+
+One of the values `regular` or `sensitive`.
+
+The default is `sensitive`, the safer setting of the two.
+
 # Monitoring the bite healer’s state once activated
 
 ## Monitoring the state by observing the LED color (recommended)

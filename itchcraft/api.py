@@ -89,4 +89,4 @@ class Api:
 
             logger.info('Using settings: %s', preferences)
             device.self_test()
-            device.start_heating()
+            device.start_heating(preferences)
