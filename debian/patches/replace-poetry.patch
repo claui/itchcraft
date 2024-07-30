@@ -21,8 +21,6 @@ Additional workarounds required for Flit v3.0.0:
   `tool.poe.tasks` section uses nested keys outside of headings,
   e.g. `tasks.cmd = "poe -v"`, which makes Flit error out 
 ---
-diff --git a/pyproject.toml b/pyproject.toml
-index ce1a037..8319243 100644
 --- a/pyproject.toml
 +++ b/pyproject.toml
 @@ -1,6 +1,48 @@
@@ -76,15 +74,15 @@ index ce1a037..8319243 100644
  
  [tool.mypy]
  check_untyped_defs = true
-@@ -51,7 +93,6 @@ autopep8 = "*"
+@@ -44,7 +86,6 @@
  mypy = ">=1.8"
  myst-parser = ">=2.0.0"
  pdoc = ">=14.0"
 -poethepoet = ">=0.24"
  pylint = ">=3.0"
  pytest = "*"
- sphinx = ">=7.1.2,<7.2.0"
-@@ -60,29 +101,6 @@ types-colorama = "*"
+ pytest-mock = "*"
+@@ -54,29 +95,6 @@
  [tool.poetry.scripts]
  itchcraft = "itchcraft.cli:run"
  

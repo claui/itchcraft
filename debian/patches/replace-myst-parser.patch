@@ -1,16 +1,12 @@
-diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
-index 86f39a6..ac9f72c 100644
 --- a/.github/workflows/ci.yml
 +++ b/.github/workflows/ci.yml
-@@ -57,6 +57,3 @@ jobs:
+@@ -60,6 +60,3 @@
  
-       - name: Run linter
-         run: poetry run poe linter
+       - name: Run unit tests
+         run: poetry run poe tests
 -
 -      - name: Run man page generator
 -        run: poetry run poe doc
-diff --git a/.gitignore b/.gitignore
-index af67b02..d1d04ac 100644
 --- a/.gitignore
 +++ b/.gitignore
 @@ -5,6 +5,7 @@
@@ -21,11 +17,9 @@ index af67b02..d1d04ac 100644
  /dist/
  /.pc/
  /.venv/
-diff --git a/doc/sphinx/conf.py b/doc/sphinx/conf.py
-index a91740a..b3f6a84 100644
 --- a/doc/sphinx/conf.py
 +++ b/doc/sphinx/conf.py
-@@ -14,7 +14,6 @@ description = 'Alternative frontend for heat-based USB insect bite healers'
+@@ -14,7 +14,6 @@
  # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
  
  extensions = [
@@ -33,11 +27,9 @@ index a91740a..b3f6a84 100644
      'sphinx.ext.autodoc',
      'sphinx.ext.napoleon',
  ]
-diff --git a/doc/sphinx/index.rst b/doc/sphinx/index.rst
-index dad1edc..6077374 100644
 --- a/doc/sphinx/index.rst
 +++ b/doc/sphinx/index.rst
-@@ -5,5 +5,4 @@ Welcome to Itchcraft's documentation!
+@@ -5,5 +5,4 @@
     :maxdepth: 2
     :caption: Contents:
  
