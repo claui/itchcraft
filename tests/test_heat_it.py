@@ -29,18 +29,22 @@ def fixture_find_dummy_device(
     return lambda: iter((dummy_device,))
 
 
-def test_default(
+@pytest.fixture(name='bulk_transfer')
+def fixture_bulk_transfer(
+    mocker: pytest_mock.MockerFixture,
     monkeypatch: pytest.MonkeyPatch,
     find_dummy_device: Iterator[AbstractContextManager[Device]],
-    mocker: pytest_mock.MockerFixture,
-) -> None:
+) -> Iterator[pytest_mock.MockType]:
     monkeypatch.setattr(devices, 'find_devices', find_dummy_device)
-
     bulk_transfer = mocker.spy(
         _DummyUsbBulkTransferDevice, 'bulk_transfer'
     )
-    Api().start()
+    yield bulk_transfer
     assert bulk_transfer.call_count == 3
+
+
+def test_default(bulk_transfer: pytest_mock.MockType) -> None:
+    Api().start()
     bulk_transfer.assert_called_with(
         ANY, [0xFF, 0x08, 0x00, 0x00, 0x08]
     )
