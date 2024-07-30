@@ -41,7 +41,6 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.9"
 colorama = "*"
-dataclass-wizard = ">=0.22"
 fire = "*"
 pyusb = "^1.2.1"
 tenacity = "^8.5.0"
