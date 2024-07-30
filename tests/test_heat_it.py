@@ -5,19 +5,30 @@ from contextlib import (
     AbstractContextManager,
     nullcontext,
 )
-from dataclasses import asdict
-from typing import Optional, Union
+from typing import Optional, TypedDict, Union
 from unittest.mock import ANY
 
 import pytest
 import pytest_mock
 
 from itchcraft import Api, devices
-from itchcraft.api import StartParams
 from itchcraft.backend import BulkTransferDevice
 from itchcraft.device import Device
 from itchcraft.heat_it import HeatItDevice
-from itchcraft.prefs import Duration, Generation, SkinSensitivity
+from itchcraft.prefs import (
+    CliEnum,
+    Duration,
+    Generation,
+    SkinSensitivity,
+)
+
+
+class StartParams(TypedDict, total=False):
+    """Parameters for the `start` method in parameterized tests."""
+
+    duration: CliEnum[Duration]
+    generation: CliEnum[Generation]
+    skin_sensitivity: CliEnum[SkinSensitivity]
 
 
 @pytest.fixture(name='dummy_device')
@@ -99,7 +110,7 @@ def test_child_sensitive_short(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x00, 0x00, 0x08],
@@ -146,7 +157,7 @@ def test_child_sensitive_medium(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x00, 0x01, 0x09],
@@ -193,7 +204,7 @@ def test_child_sensitive_long(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x00, 0x02, 0x0A],
@@ -235,7 +246,7 @@ def test_adult_sensitive_short(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x02, 0x00, 0x0A],
@@ -275,7 +286,7 @@ def test_adult_sensitive_medium(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x02, 0x01, 0x0B],
@@ -315,7 +326,7 @@ def test_adult_sensitive_long(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x02, 0x02, 0x0C],
@@ -358,7 +369,7 @@ def test_child_regular_short(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x01, 0x00, 0x09],
@@ -399,7 +410,7 @@ def test_child_regular_medium(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x01, 0x01, 0x0A],
@@ -440,7 +451,7 @@ def test_child_regular_long(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x01, 0x02, 0x0B],
@@ -481,7 +492,7 @@ def test_adult_regular_short(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x03, 0x00, 0x0B],
@@ -517,7 +528,7 @@ def test_adult_regular_medium(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x03, 0x01, 0x0C],
@@ -553,7 +564,7 @@ def test_adult_regular_long(
     bulk_transfer: pytest_mock.MockType,
     preferences: StartParams,
 ) -> None:
-    Api().start(**asdict(preferences))
+    Api().start(**preferences)
     bulk_transfer.assert_called_with(
         ANY,
         [0xFF, 0x08, 0x03, 0x02, 0x0D],

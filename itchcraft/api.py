@@ -1,7 +1,6 @@
 """The primary module in itchcraft."""
 
 from contextlib import ExitStack
-from dataclasses import dataclass
 
 from . import devices, prefs
 from .errors import CliError
@@ -17,17 +16,6 @@ from .prefs import (
 logger = get_logger(__name__)
 
 
-@dataclass(frozen=True)
-class StartParams:
-    """Parameters for the `start` method or CLI subcommand."""
-
-    duration: CliEnum[Duration] = prefs.default(Duration)
-    generation: CliEnum[Generation] = prefs.default(Generation)
-    skin_sensitivity: CliEnum[SkinSensitivity] = prefs.default(
-        SkinSensitivity
-    )
-
-
 # pylint: disable=too-few-public-methods
 class Api:
     """Tech demo for interfacing with heat-based USB insect bite healers"""
@@ -35,7 +23,6 @@ class Api:
     # pylint: disable=no-self-use
     def start(
         self,
-        # Re-enumerating all the `StartParams` fields to make Fire happy
         duration: CliEnum[Duration] = prefs.default(Duration),
         generation: CliEnum[Generation] = prefs.default(Generation),
         skin_sensitivity: CliEnum[SkinSensitivity] = prefs.default(
