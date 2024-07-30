@@ -1,5 +1,7 @@
 """Backend for heat-it"""
 
+from collections.abc import Iterable
+from functools import reduce
 from typing import Optional, Union
 
 from tenacity import (
@@ -13,6 +15,7 @@ import usb.core  # type: ignore
 from .backend import BulkTransferDevice
 from .device import Device
 from .logging import get_logger
+from .prefs import Preferences
 
 
 RESPONSE_LENGTH = 12
@@ -38,12 +41,37 @@ class HeatItDevice(Device):
         """Issues a `GET_STATUS` command and returns the response."""
         return self._command([0xFF, 0x02, 0x02], 'GET_STATUS')
 
-    def msg_start_heating(self) -> bytes:
+    def msg_start_heating(self, preferences: Preferences) -> bytes:
         """Issues a `MSG_START_HEATING` command and returns the
         response.
         """
+
+        def duration_code() -> int:
+            return preferences.duration.value - 1
+
+        def generation_code() -> int:
+            return preferences.generation.value - 1
+
+        def skin_sensitivity_code() -> int:
+            return preferences.skin_sensitivity.value - 1
+
+        def payload() -> list[int]:
+            return [
+                0x08,
+                (generation_code() << 1) + skin_sensitivity_code(),
+                duration_code(),
+            ]
+
+        def checksum(payload: Iterable[int]) -> int:
+            return reduce(int.__add__, payload)
+
         return self._command(
-            [0xFF, 0x08, 0x00, 0x00, 0x08], 'MSG_START_HEATING'
+            [
+                0xFF,
+                *payload(),
+                checksum(payload()),
+            ],
+            'MSG_START_HEATING',
         )
 
     def _command(
@@ -70,9 +98,11 @@ class HeatItDevice(Device):
         logger.debug('Response: %s', self.test_bootloader().hex(' '))
         logger.debug('Response: %s', self.get_status().hex(' '))
 
-    def start_heating(self) -> None:
+    def start_heating(self, preferences: Preferences) -> None:
         """Tells the device to start heating up."""
-        logger.debug('Response: %s', self.msg_start_heating().hex(' '))
+        logger.debug(
+            'Response: %s', self.msg_start_heating(preferences).hex(' ')
+        )
 
         logger.info('Device now preheating.')
         logger.info('Watch the LED closely.')
