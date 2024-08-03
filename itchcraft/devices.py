@@ -1,24 +1,27 @@
 """Device management and discovery"""
 
 from collections.abc import Iterator, Generator
-from contextlib import AbstractContextManager, contextmanager
+from contextlib import contextmanager
 from typing import Any, cast
 
 import usb.core  # type: ignore
 
 from .backend import UsbBulkTransferDevice
+from .device import SupportedBiteHealerMetadata
 from .heat_it import HeatItDevice
-from .device import Device
 
 
-def find_devices() -> Iterator[AbstractContextManager[Device]]:
-    """Finds the first available backend"""
+def find_bite_healers() -> Iterator[SupportedBiteHealerMetadata]:
+    """Finds available bite healers."""
     devices = cast(
         Generator[usb.core.Device, Any, None],
         usb.core.find(find_all=True, idVendor=0x32F9, idProduct=0xFCBA),
     )
     for usb_device in devices:
-        yield _heat_it_device(usb_device)
+        yield SupportedBiteHealerMetadata.from_usb_device(
+            usb_device=usb_device,
+            connection_supplier=_heat_it_device,
+        )
 
 
 @contextmanager

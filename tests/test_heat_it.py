@@ -13,7 +13,7 @@ import pytest_mock
 
 from itchcraft import Api, devices
 from itchcraft.backend import BulkTransferDevice
-from itchcraft.device import Device
+from itchcraft.device import BiteHealer, SupportedBiteHealerMetadata
 from itchcraft.heat_it import HeatItDevice
 from itchcraft.prefs import (
     CliEnum,
@@ -32,24 +32,31 @@ class StartParams(TypedDict, total=False):
 
 
 @pytest.fixture(name='dummy_device')
-def fixture_dummy_device() -> AbstractContextManager[Device]:
+def fixture_dummy_device() -> AbstractContextManager[BiteHealer]:
     return nullcontext(HeatItDevice(_DummyUsbBulkTransferDevice()))
 
 
-@pytest.fixture(name='find_dummy_device')
-def fixture_find_dummy_device(
-    dummy_device: AbstractContextManager[Device],
-) -> Callable[[], Iterator[AbstractContextManager[Device]]]:
-    return lambda: iter((dummy_device,))
+@pytest.fixture(name='find_dummy_bite_healer')
+def fixture_find_dummy_bite_healer(
+    dummy_device: AbstractContextManager[BiteHealer],
+) -> Callable[[], Iterator[SupportedBiteHealerMetadata]]:
+    metadata = SupportedBiteHealerMetadata(
+        product_name='dummy',
+        serial_number=None,
+        connection_supplier=lambda: dummy_device,
+    )
+    return lambda: iter((metadata,))
 
 
 @pytest.fixture(name='bulk_transfer')
 def fixture_bulk_transfer(
     mocker: pytest_mock.MockerFixture,
     monkeypatch: pytest.MonkeyPatch,
-    find_dummy_device: Iterator[AbstractContextManager[Device]],
+    find_dummy_bite_healer: Iterator[SupportedBiteHealerMetadata],
 ) -> Iterator[pytest_mock.MockType]:
-    monkeypatch.setattr(devices, 'find_devices', find_dummy_device)
+    monkeypatch.setattr(
+        devices, 'find_bite_healers', find_dummy_bite_healer
+    )
     bulk_transfer = mocker.spy(
         _DummyUsbBulkTransferDevice, 'bulk_transfer'
     )

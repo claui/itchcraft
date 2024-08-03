@@ -13,7 +13,7 @@ from tenacity import (
 import usb.core  # type: ignore
 
 from .backend import BulkTransferDevice
-from .device import Device
+from .device import BiteHealer
 from .logging import get_logger
 from .prefs import Preferences
 
@@ -23,7 +23,7 @@ RESPONSE_LENGTH = 12
 logger = get_logger(__name__)
 
 
-class HeatItDevice(Device):
+class HeatItDevice(BiteHealer):
     """A heat-it bite healer, configured over USB."""
 
     device: BulkTransferDevice
@@ -98,7 +98,7 @@ class HeatItDevice(Device):
         logger.debug('Response: %s', self.test_bootloader().hex(' '))
         logger.debug('Response: %s', self.get_status().hex(' '))
 
-    def start_heating(self, preferences: Preferences) -> None:
+    def start_with_preferences(self, preferences: Preferences) -> None:
         """Tells the device to start heating up."""
         logger.debug(
             'Response: %s', self.msg_start_heating(preferences).hex(' ')

@@ -1,16 +1,15 @@
 """Activates a connected USB bite healer."""
 
-from contextlib import ExitStack
-
 from . import devices
 from .errors import BiteHealerError
+from .format import format_title
 from .logging import get_logger
 from .prefs import Preferences
 
 logger = get_logger(__name__)
 
 
-def start_with_prefs(preferences: Preferences) -> None:
+def start_with_preferences(preferences: Preferences) -> None:
     """Activates (i.e. heats up) a connected USB bite healer for
     demonstration purposes.
 
@@ -24,24 +23,21 @@ def start_with_prefs(preferences: Preferences) -> None:
 
     logger.info('Searching for bite healer')
 
-    with ExitStack() as stack:
-        candidates = [
-            stack.enter_context(candidate)
-            for candidate in devices.find_devices()
-        ]
-        if not candidates:
-            raise BiteHealerError('No bite healer connected')
+    if not (candidates := list(devices.find_bite_healers())):
+        raise BiteHealerError('No bite healer connected')
+    supported_candidates = [
+        candidate for candidate in candidates if candidate.supported()
+    ]
+    if not supported_candidates:
+        raise BiteHealerError(
+            f'Unsupported bite healer: {format_title(candidates[0])}.'
+            + ' Please raise an issue on Itchcraft’s project page.'
+        )
+    candidate = supported_candidates[0]
 
-        device = candidates[0]
-        logger.info('Using device: %s', device)
-        for rejected_device in candidates[1:]:
-            logger.info(
-                'Ignoring additional device: %s', rejected_device
-            )
-            logger.warning(
-                'Itchcraft can only use one device at a time.'
-            )
+    logger.info('Using bite healer: %s', format_title(candidate))
+    logger.info('Using settings: %s', preferences)
 
-        logger.info('Using settings: %s', preferences)
-        device.self_test()
-        device.start_heating(preferences)
+    with candidate.connect() as bite_healer:
+        bite_healer.self_test()
+        bite_healer.start_with_preferences(preferences)

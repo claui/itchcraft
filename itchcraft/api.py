@@ -10,7 +10,7 @@ from .prefs import (
     Preferences,
     SkinSensitivity,
 )
-from .start import start_with_prefs
+from .start import start_with_preferences
 
 logger = get_logger(__name__)
 
@@ -49,6 +49,6 @@ class Api:
             ),
         )
         try:
-            start_with_prefs(preferences)
+            start_with_preferences(preferences)
         except BiteHealerError as e:
             raise CliError(e) from e
