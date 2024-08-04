@@ -132,6 +132,16 @@ SUPPORT_STATEMENTS: list[SupportStatement] = [
         supported=False,
         comment='Itchcraft doesn’t work with this legacy model.',
     ),
+    SupportStatement(
+        vid=0x10C4,  # 4292
+        pid=0xEA60,  # 60000
+        vendor_name='mibeTec GmbH',
+        product_name='bite away® pro',
+        supported=False,
+        comment="""\
+        Support for this model is on the roadmap for a future release
+        of Itchcraft.
+        """,
     ),
     SupportStatement(
         vid=0x10C4,  # 4292
