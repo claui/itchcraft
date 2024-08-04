@@ -1,6 +1,9 @@
 """Activates a connected USB bite healer."""
 
+from typing import cast
+
 from . import devices
+from .device import SupportedBiteHealerMetadata
 from .errors import BiteHealerError
 from .format import format_title
 from .logging import get_logger
@@ -25,8 +28,10 @@ def start_with_preferences(preferences: Preferences) -> None:
 
     if not (candidates := list(devices.find_bite_healers())):
         raise BiteHealerError('No bite healer connected')
-    supported_candidates = [
-        candidate for candidate in candidates if candidate.supported()
+    supported_candidates: list[SupportedBiteHealerMetadata] = [
+        cast(SupportedBiteHealerMetadata, candidate)
+        for candidate in candidates
+        if candidate.supported
     ]
     if not supported_candidates:
         raise BiteHealerError(
@@ -34,6 +39,7 @@ def start_with_preferences(preferences: Preferences) -> None:
             + ' Please raise an issue on Itchcraft’s project page.'
         )
     candidate = supported_candidates[0]
+    assert candidate.supported is True
 
     logger.info('Using bite healer: %s', format_title(candidate))
     logger.info('Using settings: %s', preferences)

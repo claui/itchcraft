@@ -5,11 +5,11 @@ from typing import Any, cast
 
 import usb.core  # type: ignore
 
-from .device import SupportedBiteHealerMetadata
+from .device import from_usb_device, BiteHealerMetadata
 from .support import SUPPORT_STATEMENTS, SupportStatement, VidPid
 
 
-def find_bite_healers() -> Iterator[SupportedBiteHealerMetadata]:
+def find_bite_healers() -> Iterator[BiteHealerMetadata]:
     """Finds available bite healers."""
     devices = cast(
         Generator[usb.core.Device, Any, None],
@@ -26,9 +26,7 @@ def find_bite_healers() -> Iterator[SupportedBiteHealerMetadata]:
         if (statement := vid_pid_dict.get(vid_pid)) is None:
             continue
 
-        if statement.supported:
-            assert statement.connection_supplier is not None
-            yield SupportedBiteHealerMetadata.from_usb_device(
-                usb_device=device,
-                support_statement=statement,
-            )
+        yield from_usb_device(
+            usb_device=device,
+            support_statement=statement,
+        )

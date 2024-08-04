@@ -2,29 +2,34 @@
 
 from collections.abc import Iterable
 
-from .device import SupportedBiteHealerMetadata
+from .device import BiteHealerMetadata
 
 
 def format_table(
-    bite_healers: Iterable[SupportedBiteHealerMetadata],
+    bite_healers: Iterable[BiteHealerMetadata],
 ) -> str:
     """Returns a formatted table for the given list of bite healers."""
     return '\n'.join(
         [
-            f'{format_title(item)}'
-            + f" – {'supported' if item.supported() else 'unsupported'}"
+            '*'
+            + f' {format_title(item)}'
+            + f" – {'supported' if item.supported else 'unsupported'}"
             for item in bite_healers
         ]
     )
 
 
-def format_title(item: SupportedBiteHealerMetadata) -> str:
+def format_title(item: BiteHealerMetadata) -> str:
     """Returns a formatted title for the given bite healer."""
 
     def details() -> list[str]:
         return (
             [
-                f'S/N: {item.serial_number}',
+                (
+                    f'S/N: {item.serial_number}'
+                    if item.serial_number
+                    else 'unknown serial number'
+                ),
             ]
             + (
                 [f'self-identified as `{item.usb_product_name}`']
@@ -38,7 +43,6 @@ def format_title(item: SupportedBiteHealerMetadata) -> str:
 
     return ' '.join(
         [
-            '*',
             item.product_name,
             f"({', '.join(details())})",
         ]
