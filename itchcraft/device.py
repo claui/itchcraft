@@ -43,12 +43,12 @@ class SupportedBiteHealerMetadata:
 
     @property
     def vendor_name(self) -> str:
-        """Canonical vendor name from Itchcraft’s point of view"""
+        """Canonical vendor name from Itchcraft’s point of view."""
         return self.support_statement.vendor_name
 
     @property
     def product_name(self) -> str:
-        """Canonical product name from Itchcraft’s point of view"""
+        """Canonical product name from Itchcraft’s point of view."""
         return self.support_statement.product_name
 
     @property
@@ -59,10 +59,9 @@ class SupportedBiteHealerMetadata:
 
 @dataclass(frozen=True)
 class UnsupportedBiteHealerMetadata:
-    """Device metadata for a supported bite healer connected to the
-    host but not necessarily activated.
-    Clients can query information from the bite healer and open a
-    connection.
+    """Device metadata for an unsupported bite healer connected to the
+    host.
+    Clients can query information from the bite healer.
     """
 
     usb_product_name: Optional[str]
@@ -76,12 +75,12 @@ class UnsupportedBiteHealerMetadata:
 
     @property
     def vendor_name(self) -> str:
-        """Canonical vendor name from Itchcraft’s point of view"""
+        """Canonical vendor name from Itchcraft’s point of view."""
         return self.support_statement.vendor_name
 
     @property
     def product_name(self) -> str:
-        """Canonical product name from Itchcraft’s point of view"""
+        """Canonical product name from Itchcraft’s point of view."""
         return self.support_statement.product_name
 
     @property
