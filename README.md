@@ -146,6 +146,8 @@ At the moment, Itchcraft offers the following features:
 
 - Choose a skin sensitivity level: regular skin or sensitive skin
 
+- Show a list of connected bite healers
+
 A graphical front-end is planned.
 
 ## System requirements

@@ -1,9 +1,9 @@
 """The primary module in itchcraft."""
 
-from contextlib import ExitStack
-
-from . import devices, prefs
-from .errors import CliError
+from . import prefs
+from .devices import find_bite_healers
+from .errors import CliError, BiteHealerError
+from .format import format_table
 from .logging import get_logger
 from .prefs import (
     CliEnum,
@@ -12,6 +12,7 @@ from .prefs import (
     Preferences,
     SkinSensitivity,
 )
+from .start import start_with_preferences
 
 logger = get_logger(__name__)
 
@@ -21,6 +22,20 @@ class Api:
     """Tech demo for interfacing with heat-based USB insect bite healers"""
 
     # pylint: disable=no-self-use
+    def info(self) -> None:
+        """Shows a list of USB bite healers that are connected to
+        the host.
+        """
+        if not (bite_healers := list(find_bite_healers())):
+            logger.info('No known bite healers detected')
+            return
+        logger.info(
+            f'Detected {(n := len(bite_healers))}'
+            + f" bite healer{'' if n == 1 else 's'}"
+        )
+        print(format_table(bite_healers))
+
+    # pylint: disable=no-self-use
     def start(
         self,
         duration: CliEnum[Duration] = prefs.default(Duration),
@@ -28,7 +43,7 @@ class Api:
         skin_sensitivity: CliEnum[SkinSensitivity] = prefs.default(
             SkinSensitivity
         ),
-    ) -> None:  # pylint: disable=no-self-use
+    ) -> None:
         """Activates (i.e. heats up) a connected USB bite healer for
         demonstration purposes.
 
@@ -49,31 +64,7 @@ class Api:
                 skin_sensitivity, SkinSensitivity
             ),
         )
-        logger.warning('This app is only a tech demo')
-        logger.warning('and NOT for medical use.')
-        logger.warning('The app is NOT SAFE to use')
-        logger.warning('for treating insect bites.')
-
-        logger.info('Searching for bite healer')
-
-        with ExitStack() as stack:
-            candidates = [
-                stack.enter_context(candidate)
-                for candidate in devices.find_devices()
-            ]
-            if not candidates:
-                raise CliError('No bite healer connected')
-
-            device = candidates[0]
-            logger.info('Using device: %s', device)
-            for rejected_device in candidates[1:]:
-                logger.info(
-                    'Ignoring additional device: %s', rejected_device
-                )
-                logger.warning(
-                    'Itchcraft can only use one device at a time.'
-                )
-
-            logger.info('Using settings: %s', preferences)
-            device.self_test()
-            device.start_heating(preferences)
+        try:
+            start_with_preferences(preferences)
+        except BiteHealerError as e:
+            raise CliError(e) from e

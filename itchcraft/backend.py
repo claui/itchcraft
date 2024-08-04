@@ -1,8 +1,8 @@
 """USB backend management"""
 
 from abc import ABC, abstractmethod
-from collections.abc import Callable
 import array
+from collections.abc import Callable
 from typing import Optional, Union, cast
 
 import usb.core  # type: ignore

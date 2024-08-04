@@ -18,11 +18,16 @@ itchcraft COMMAND
 
 `COMMAND` is one of the following:
 
+`info`
+: Shows a list of USB bite healers that are connected to the host.
+
 `start`
 : Activates (i.e. heats up) a connected USB bite healer for
 : demonstration purposes.
 
 # Flags
+
+The `info` command does not support any flags.
 
 The `start` command supports the following flags:
 
