@@ -1,6 +1,7 @@
 """Formatting support"""
 
 from collections.abc import Iterable
+from operator import attrgetter
 
 from .device import BiteHealerMetadata
 
@@ -14,7 +15,11 @@ def format_table(
             '*'
             + f' {format_title(item)}'
             + f" – {'supported' if item.supported else 'unsupported'}"
-            for item in bite_healers
+            for item in sorted(
+                bite_healers,
+                key=attrgetter('supported'),
+                reverse=True,
+            )
         ]
     )
 
