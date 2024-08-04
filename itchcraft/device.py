@@ -4,7 +4,7 @@ from collections.abc import Callable
 from contextlib import AbstractContextManager
 from dataclasses import dataclass
 import functools
-from typing import cast, Optional, Union
+from typing import cast, Literal, Optional, Union
 
 import usb.core  # type: ignore
 
@@ -101,37 +101,32 @@ def from_usb_device(
 ) -> BiteHealerMetadata:
     """Creates a metadata object from a USB device."""
 
-    usb_product_name = None
-    serial_number = None
-    try:
-        usb_product_name = cast(Optional[str], usb_device.product)
-    except ValueError:
-        logger.error(
-            '%s: unable to obtain %s; check permissions',
-            support_statement.product_name,
-            'product name',
-        )
-    try:
-        serial_number = cast(Optional[str], usb_device.serial_number)
-    except ValueError:
-        logger.error(
-            '%s: unable to obtain %s; check permissions',
-            support_statement.product_name,
-            'serial number',
-        )
+    def try_get_usb_attribute(
+        name: Literal['product', 'serial_number'],
+    ) -> Optional[str]:
+        try:
+            return cast(Optional[str], getattr(usb_device, name))
+        except ValueError:
+            if support_statement.supported:
+                logger.error(
+                    '%s: cannot read `%s` attribute; check permissions',
+                    support_statement.product_name,
+                    name.replace('_', ' '),
+                )
+            return None
 
     if support_statement.supported is True:
         assert support_statement.connection_supplier is not None
         return SupportedBiteHealerMetadata(
-            usb_product_name=usb_product_name,
-            serial_number=serial_number,
+            usb_product_name=try_get_usb_attribute('product'),
+            serial_number=try_get_usb_attribute('serial_number'),
             connection_supplier=functools.partial(
                 support_statement.connection_supplier, usb_device
             ),
             support_statement=support_statement,
         )
     return UnsupportedBiteHealerMetadata(
-        usb_product_name=usb_product_name,
-        serial_number=serial_number,
+        usb_product_name=try_get_usb_attribute('product'),
+        serial_number=try_get_usb_attribute('serial_number'),
         support_statement=support_statement,
     )
