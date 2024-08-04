@@ -4,12 +4,10 @@ from collections.abc import Iterable
 from functools import reduce
 from typing import Optional, Union
 
-from tenacity import (
-    retry,
-    retry_if_exception_type,
-    stop_after_attempt,
-    wait_fixed,
-)
+from tenacity import retry
+from tenacity.retry import retry_if_exception_type
+from tenacity.stop import stop_after_attempt
+from tenacity.wait import wait_fixed
 import usb.core  # type: ignore
 
 from .backend import BulkTransferDevice
@@ -87,9 +85,9 @@ class HeatItDevice(BiteHealer):
 
     @retry(
         reraise=True,
-        retry=retry_if_exception_type(usb.core.USBError),
-        stop=stop_after_attempt(10),
-        wait=wait_fixed(1),
+        retry=retry_if_exception_type(usb.core.USBError),  # type: ignore
+        stop=stop_after_attempt(10),  # type: ignore
+        wait=wait_fixed(1),  # type: ignore
     )
     def self_test(self) -> None:
         """Tries up to five times to test the bootloader and obtain
