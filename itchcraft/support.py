@@ -79,11 +79,11 @@ SUPPORT_STATEMENTS: list[SupportStatement] = [
     SupportStatement(
         vid=0x10C4,  # 4292
         pid=0xEAC9,  # 60105
-        vendor_name='Kamedi GmbH',
-        product_name='heat it',
+        vendor_name='Silicon Laboratories, Inc.',
+        product_name='EFM8UB1',
         supported=False,
         comment="""\
-        Stock EFM8 device; missing bite healer firmware.
+        Stock EFM8 chipset; missing bite healer firmware.
         Can’t be used as a bite healer unless firmware is installed.
         """,
     ),
