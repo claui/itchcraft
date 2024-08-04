@@ -12,7 +12,7 @@ def format_table(
     """Returns a formatted table for the given list of bite healers."""
     return '\n'.join(
         [
-            '*'
+            ('[*]' if item.supported else '[!]')
             + f' {format_title(item)}'
             + f" – {'supported' if item.supported else 'unsupported'}"
             for item in sorted(
