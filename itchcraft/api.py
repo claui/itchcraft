@@ -1,7 +1,9 @@
 """The primary module in itchcraft."""
 
 from . import prefs
+from .devices import find_bite_healers
 from .errors import CliError, BiteHealerError
+from .format import format_table
 from .logging import get_logger
 from .prefs import (
     CliEnum,
@@ -18,6 +20,20 @@ logger = get_logger(__name__)
 # pylint: disable=too-few-public-methods
 class Api:
     """Tech demo for interfacing with heat-based USB insect bite healers"""
+
+    # pylint: disable=no-self-use
+    def info(self) -> None:
+        """Shows a list of USB bite healers that are connected to
+        the host.
+        """
+        if not (bite_healers := list(find_bite_healers())):
+            logger.info('No known bite healers detected')
+            return
+        logger.info(
+            f'Detected {(n := len(bite_healers))}'
+            + f" bite healer{'' if n == 1 else 's'}"
+        )
+        print(format_table(bite_healers))
 
     # pylint: disable=no-self-use
     def start(

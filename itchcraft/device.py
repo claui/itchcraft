@@ -1,6 +1,5 @@
 """Base class for devices"""
 
-from abc import ABC, abstractmethod
 from collections.abc import Callable
 from contextlib import AbstractContextManager
 from dataclasses import dataclass
@@ -9,23 +8,11 @@ from typing import cast, Optional, TypeVar
 
 import usb.core  # type: ignore
 
-from .prefs import Preferences
+from .support import SupportStatement
+from .types import BiteHealer
 
 
-class BiteHealer(ABC):
-    """Abstraction for a bite healer."""
-
-    @abstractmethod
-    def self_test(self) -> None:
-        """Tests the device to make sure it is online and
-        functional."""
-
-    @abstractmethod
-    def start_with_preferences(self, preferences: Preferences) -> None:
-        """Tells the device to start heating up."""
-
-
-Self = TypeVar('Self', bound='SupportedBiteHealerMetadata')
+_Self = TypeVar('_Self', bound='SupportedBiteHealerMetadata')
 
 
 @dataclass(frozen=True)
@@ -36,7 +23,7 @@ class SupportedBiteHealerMetadata:
     connection.
     """
 
-    product_name: Optional[str]
+    usb_product_name: Optional[str]
     """Product name of the backing USB device."""
 
     serial_number: Optional[str]
@@ -47,27 +34,41 @@ class SupportedBiteHealerMetadata:
     ]
     """Callable that connects to the bite healer."""
 
+    support_statement: SupportStatement
+    """Details about the support status for this bite healer."""
+
     @classmethod
     def from_usb_device(
-        cls: type[Self],
+        cls: type[_Self],
         usb_device: usb.core.Device,
-        connection_supplier: Callable[
-            [usb.core.Device], AbstractContextManager[BiteHealer]
-        ],
-    ) -> Self:
+        support_statement: SupportStatement,
+    ) -> _Self:
         """Creates a metadata object from a USB device."""
 
+        assert support_statement.supported is True
+        assert support_statement.connection_supplier is not None
         return cls(
-            product_name=cast(Optional[str], usb_device.product),
+            usb_product_name=cast(Optional[str], usb_device.product),
             serial_number=cast(Optional[str], usb_device.serial_number),
             connection_supplier=functools.partial(
-                connection_supplier, usb_device
+                support_statement.connection_supplier, usb_device
             ),
+            support_statement=support_statement,
         )
 
     def connect(self) -> AbstractContextManager[BiteHealer]:
         """Connects to the device."""
         return self.connection_supplier()
+
+    @property
+    def vendor_name(self) -> str:
+        """Canonical vendor name from Itchcraft’s point of view"""
+        return self.support_statement.vendor_name
+
+    @property
+    def product_name(self) -> str:
+        """Canonical product name from Itchcraft’s point of view"""
+        return self.support_statement.product_name
 
     @staticmethod
     def supported() -> bool:

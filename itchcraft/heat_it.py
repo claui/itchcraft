@@ -11,9 +11,9 @@ from tenacity.wait import wait_fixed
 import usb.core  # type: ignore
 
 from .backend import BulkTransferDevice
-from .device import BiteHealer
 from .logging import get_logger
 from .prefs import Preferences
+from .types import BiteHealer
 
 
 RESPONSE_LENGTH = 12

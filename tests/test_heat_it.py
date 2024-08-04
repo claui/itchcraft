@@ -13,7 +13,7 @@ import pytest_mock
 
 from itchcraft import Api, devices
 from itchcraft.backend import BulkTransferDevice
-from itchcraft.device import BiteHealer, SupportedBiteHealerMetadata
+from itchcraft.device import SupportedBiteHealerMetadata
 from itchcraft.heat_it import HeatItDevice
 from itchcraft.prefs import (
     CliEnum,
@@ -21,6 +21,8 @@ from itchcraft.prefs import (
     Generation,
     SkinSensitivity,
 )
+from itchcraft.support import SupportStatement
+from itchcraft.types import BiteHealer
 
 
 class StartParams(TypedDict, total=False):
@@ -36,14 +38,29 @@ def fixture_dummy_device() -> AbstractContextManager[BiteHealer]:
     return nullcontext(HeatItDevice(_DummyUsbBulkTransferDevice()))
 
 
+@pytest.fixture(name='dummy_support_statement')
+def fixture_dummy_support_statement(
+    dummy_device: AbstractContextManager[BiteHealer],
+) -> SupportStatement:
+    return SupportStatement(
+        vid=0xF055,
+        pid=0x17C4,
+        vendor_name='ACME',
+        product_name='dummy',
+        connection_supplier=lambda _: dummy_device,
+    )
+
+
 @pytest.fixture(name='find_dummy_bite_healer')
 def fixture_find_dummy_bite_healer(
     dummy_device: AbstractContextManager[BiteHealer],
+    dummy_support_statement: SupportStatement,
 ) -> Callable[[], Iterator[SupportedBiteHealerMetadata]]:
     metadata = SupportedBiteHealerMetadata(
-        product_name='dummy',
+        usb_product_name='dummy',
         serial_number=None,
         connection_supplier=lambda: dummy_device,
+        support_statement=dummy_support_statement,
     )
     return lambda: iter((metadata,))
 
