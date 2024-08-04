@@ -51,11 +51,40 @@ def _heat_it_device(
 
 
 SUPPORT_STATEMENTS: list[SupportStatement] = [
+    # Supported bite healers
     SupportStatement(
-        vid=0x32F9,
-        pid=0xFCBA,
+        vid=0x32F9,  # 13049
+        pid=0xFCA9,  # 64681
         vendor_name='Kamedi GmbH',
         product_name='heat it',
         connection_supplier=_heat_it_device,
+        comment='Untested but will likely work',
+    ),
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0xFCBA,  # 64698
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        connection_supplier=_heat_it_device,
+    ),
+    # Unsupported bite healers
+    SupportStatement(
+        vid=0x10C4,  # 4292
+        pid=0x8C9B,  # 35995
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        supported=False,
+        comment='Untested',
+    ),
+    SupportStatement(
+        vid=0x10C4,  # 4292
+        pid=0xEAC9,  # 60105
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        supported=False,
+        comment="""\
+        Stock EFM8 device; missing bite healer firmware.
+        Can’t be used as a bite healer unless firmware is installed.
+        """,
     ),
 ]
