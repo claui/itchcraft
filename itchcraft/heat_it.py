@@ -4,18 +4,16 @@ from collections.abc import Iterable
 from functools import reduce
 from typing import Optional, Union
 
-from tenacity import (
-    retry,
-    retry_if_exception_type,
-    stop_after_attempt,
-    wait_fixed,
-)
+from tenacity import retry
+from tenacity.retry import retry_if_exception_type
+from tenacity.stop import stop_after_attempt
+from tenacity.wait import wait_fixed
 import usb.core  # type: ignore
 
 from .backend import BulkTransferDevice
-from .device import Device
 from .logging import get_logger
 from .prefs import Preferences
+from .types import BiteHealer
 
 
 RESPONSE_LENGTH = 12
@@ -23,7 +21,7 @@ RESPONSE_LENGTH = 12
 logger = get_logger(__name__)
 
 
-class HeatItDevice(Device):
+class HeatItDevice(BiteHealer):
     """A heat-it bite healer, configured over USB."""
 
     device: BulkTransferDevice
@@ -87,9 +85,9 @@ class HeatItDevice(Device):
 
     @retry(
         reraise=True,
-        retry=retry_if_exception_type(usb.core.USBError),
-        stop=stop_after_attempt(10),
-        wait=wait_fixed(1),
+        retry=retry_if_exception_type(usb.core.USBError),  # type: ignore
+        stop=stop_after_attempt(10),  # type: ignore
+        wait=wait_fixed(1),  # type: ignore
     )
     def self_test(self) -> None:
         """Tries up to five times to test the bootloader and obtain
@@ -98,7 +96,7 @@ class HeatItDevice(Device):
         logger.debug('Response: %s', self.test_bootloader().hex(' '))
         logger.debug('Response: %s', self.get_status().hex(' '))
 
-    def start_heating(self, preferences: Preferences) -> None:
+    def start_with_preferences(self, preferences: Preferences) -> None:
         """Tells the device to start heating up."""
         logger.debug(
             'Response: %s', self.msg_start_heating(preferences).hex(' ')

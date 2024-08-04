@@ -36,8 +36,8 @@ classifiers = [
 python = ">=3.9"
 colorama = "*"
 fire = "*"
-pyusb = "^1.2.1"
-tenacity = "^8.5.0"
+pyusb = "^1.0.2"
+tenacity = "^6.2.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "*"
