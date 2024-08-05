@@ -48,7 +48,12 @@ class UsbBulkTransferDevice(BulkTransferDevice):
     endpoint_in: usb.core.Endpoint
 
     def __init__(self, device: usb.core.Device) -> None:
-        device.set_configuration()
+        try:
+            device.set_configuration()
+        except usb.core.USBError as ex:
+            raise BackendInitializationError(
+                f'Unable to connect to {device.product}: {ex}'
+            ) from ex
         config = cast(
             usb.core.Configuration,
             device.get_active_configuration(),
@@ -60,13 +65,13 @@ class UsbBulkTransferDevice(BulkTransferDevice):
             self.endpoint_out = _find_endpoint(interface, _match_out)
         except EndpointNotFound as ex:
             raise BackendInitializationError(
-                f'Outbound endpoint not found for {device}',
+                f'Outbound endpoint not found for {device.product}',
             ) from ex
         try:
             self.endpoint_in = _find_endpoint(interface, _match_in)
         except EndpointNotFound as ex:
             raise BackendInitializationError(
-                f'Inbound endpoint not found for {device}',
+                f'Inbound endpoint not found for {device.product}',
             ) from ex
 
     def bulk_transfer(
