@@ -22,7 +22,7 @@ logger = get_logger(__name__)
 
 
 class HeatItDevice(BiteHealer):
-    """A heat-it bite healer, configured over USB."""
+    """A “heat it” bite healer, configured over USB."""
 
     device: BulkTransferDevice
 

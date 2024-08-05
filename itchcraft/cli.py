@@ -19,8 +19,10 @@ def _version_text() -> str:
     if __version__ is None:
         return 'Itchcraft (unknown version)'
     if os.path.exists(PYPROJECT_TOML):
-        return f'Itchcraft v{__version__}' \
+        return (
+            f'Itchcraft v{__version__}'
             + f' (in development at {PROJECT_ROOT})'
+        )
     return f'Itchcraft v{__version__}'
 
 

@@ -42,6 +42,12 @@ class VidPid(NamedTuple):
     vid: int
     pid: int
 
+    def __str__(self) -> str:
+        return (
+            f'{self.vid:04x}:{self.pid:04x}'
+            + f' (VID {self.vid}, PID {self.pid})'
+        )
+
 
 @contextmanager
 def _heat_it_device(
