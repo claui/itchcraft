@@ -108,8 +108,8 @@ def _find_endpoint(
     return cast(usb.core.Endpoint, endpoint)
 
 
-def _match_in(endpoint: usb.core.Endpoint) -> bool:
-    address = endpoint.bEndpointAddress  # pyright: ignore
+def _match_in(device: usb.core.Device) -> bool:
+    address = device.bEndpointAddress  # pyright: ignore
     return bool(
         usb.util.endpoint_direction(address) == usb.util.ENDPOINT_IN
     )
