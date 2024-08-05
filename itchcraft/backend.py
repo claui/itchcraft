@@ -52,16 +52,29 @@ class UsbBulkTransferDevice(BulkTransferDevice):
 
     def __init__(self, device: usb.core.Device) -> None:
         try:
-            device.set_configuration()
-        except usb.core.USBError as ex:
-            raise BackendInitializationError(
-                f'Unable to connect to {device.product}: {ex}'
-            ) from ex
-        logger.debug('Configuration successful')
-        config = cast(
-            usb.core.Configuration,
-            device.get_active_configuration(),
-        )
+            config = cast(
+                usb.core.Configuration,
+                device.get_active_configuration(),
+            )
+        except usb.core.USBError:
+            logger.debug('Device has no active configuration')
+            config = None
+        else:
+            logger.debug('Device already configured')
+            logger.debug('Active configuration: %s', config)
+
+        if config is None:
+            try:
+                device.set_configuration()
+            except usb.core.USBError as ex:
+                raise BackendInitializationError(
+                    f'Unable to connect to {device.product}: {ex}'
+                ) from ex
+            logger.debug('Configuration successful')
+            config = cast(
+                usb.core.Configuration,
+                device.get_active_configuration(),
+            )
         interface = config[(0, 0)]
 
         self.device = device
