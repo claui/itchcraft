@@ -8,6 +8,9 @@ from typing import Optional, Union, cast
 import usb.core  # type: ignore
 
 from .errors import BackendInitializationError, EndpointNotFound
+from .logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class BulkTransferDevice(ABC):
@@ -54,6 +57,7 @@ class UsbBulkTransferDevice(BulkTransferDevice):
             raise BackendInitializationError(
                 f'Unable to connect to {device.product}: {ex}'
             ) from ex
+        logger.debug('Configuration successful')
         config = cast(
             usb.core.Configuration,
             device.get_active_configuration(),
