@@ -50,15 +50,71 @@ def _heat_it_device(
     yield HeatItDevice(UsbBulkTransferDevice(usb_device))
 
 
+_UNTESTED = """\
+Itchcraft hasn’t been tested on this model, but I expect it to work just
+fine. Your feedback is welcome, so feel free to open a GitHub issue on
+https://github.com/claui/itchcraft/issues and share your findings.
+Or write to: itchcraft@cpellegrino.de
+"""
+
+
 SUPPORT_STATEMENTS: list[SupportStatement] = [
     # Supported bite healers
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0x0001,  # 1
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        connection_supplier=_heat_it_device,
+        comment=_UNTESTED,
+    ),
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0x0002,  # 2
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        connection_supplier=_heat_it_device,
+        comment=_UNTESTED,
+    ),
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0x0003,  # 3
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        connection_supplier=_heat_it_device,
+        comment=_UNTESTED,
+    ),
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0x0004,  # 4
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        connection_supplier=_heat_it_device,
+        comment=_UNTESTED,
+    ),
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0x0005,  # 5
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        connection_supplier=_heat_it_device,
+        comment=_UNTESTED,
+    ),
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0x0006,  # 6
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        connection_supplier=_heat_it_device,
+        comment=_UNTESTED,
+    ),
     SupportStatement(
         vid=0x32F9,  # 13049
         pid=0xFCA9,  # 64681
         vendor_name='Kamedi GmbH',
         product_name='heat it',
         connection_supplier=_heat_it_device,
-        comment='Untested but will likely work',
+        comment=_UNTESTED,
     ),
     SupportStatement(
         vid=0x32F9,  # 13049
@@ -72,9 +128,20 @@ SUPPORT_STATEMENTS: list[SupportStatement] = [
         vid=0x10C4,  # 4292
         pid=0x8C9B,  # 35995
         vendor_name='Kamedi GmbH',
-        product_name='heat it',
+        product_name='heat it (legacy)',
         supported=False,
-        comment='Untested',
+        comment='Itchcraft doesn’t work with this legacy model.',
+    ),
+    SupportStatement(
+        vid=0x10C4,  # 4292
+        pid=0xEA60,  # 60000
+        vendor_name='mibeTec GmbH',
+        product_name='bite away® pro',
+        supported=False,
+        comment="""\
+        Support for this model is on the roadmap for a future release
+        of Itchcraft.
+        """,
     ),
     SupportStatement(
         vid=0x10C4,  # 4292
@@ -85,6 +152,19 @@ SUPPORT_STATEMENTS: list[SupportStatement] = [
         comment="""\
         Stock EFM8 chipset; missing bite healer firmware.
         Can’t be used as a bite healer unless firmware is installed.
+        """,
+    ),
+    SupportStatement(
+        vid=0x32F9,  # 13049
+        pid=0x0007,  # 7
+        vendor_name='Kamedi GmbH',
+        product_name='heat it',
+        supported=False,
+        comment="""\
+        Itchcraft is not compatible with this new model. If you’d like
+        me to add support, please open a GitHub issue on
+        https://github.com/claui/itchcraft/issues or write to:
+        itchcraft@cpellegrino.de
         """,
     ),
 ]
