@@ -66,6 +66,9 @@ class UsbBulkTransferDevice(BulkTransferDevice):
 
         interface = config[(0, 0)]
         self.device = device
+
+        _detach_driver_if_needed(device, interface.index)
+
         try:
             self.endpoint_out = _find_endpoint(interface, _match_out)
         except EndpointNotFound as ex:
@@ -103,6 +106,18 @@ class UsbBulkTransferDevice(BulkTransferDevice):
     @property
     def serial_number(self) -> Optional[str]:
         return cast(Optional[str], self.device.serial_number)
+
+
+def _detach_driver_if_needed(
+    device: usb.core.Device, interface_index: int
+) -> None:
+    if device.is_kernel_driver_active(interface_index):
+        logger.debug(
+            'Detaching driver from interface #%d',
+            interface_index,
+        )
+        device.detach_kernel_driver(interface_index)
+        logger.debug('Driver successfully detached')
 
 
 def _find_endpoint(
