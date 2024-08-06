@@ -51,19 +51,7 @@ class UsbBulkTransferDevice(BulkTransferDevice):
     endpoint_in: usb.core.Endpoint
 
     def __init__(self, device: usb.core.Device) -> None:
-        try:
-            config = cast(
-                usb.core.Configuration,
-                device.get_active_configuration(),
-            )
-        except usb.core.USBError:
-            logger.debug('Device has no active configuration')
-            config = None
-        else:
-            logger.debug('Device already configured')
-            logger.debug('Active configuration: %s', config)
-
-        if config is None:
+        if (config := _get_config_if_exists(device)) is None:
             try:
                 device.set_configuration()
             except usb.core.USBError as ex:
@@ -123,6 +111,23 @@ def _find_endpoint(
     ) is None:
         raise EndpointNotFound('find_descriptor returned None')
     return cast(usb.core.Endpoint, endpoint)
+
+
+def _get_config_if_exists(
+    device: usb.core.Device,
+) -> Optional[usb.core.Configuration]:
+    try:
+        config = cast(
+            usb.core.Configuration,
+            device.get_active_configuration(),
+        )
+    except usb.core.USBError:
+        logger.debug('Device has no active configuration')
+        config = None
+    else:
+        logger.debug('Device already configured')
+        logger.debug('Active configuration: %s', config)
+    return config
 
 
 def _match_in(device: usb.core.Device) -> bool:
