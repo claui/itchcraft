@@ -91,9 +91,7 @@ class HeatItDevice(BiteHealer):
         wait=wait_fixed(1),  # type: ignore
     )
     def self_test(self) -> None:
-        """Tries up to five times to test the bootloader and obtain
-        the device status.
-        """
+        """Tests the bootloader and obtains the device status."""
         logger.debug('Response: %s', self.test_bootloader().hex(' '))
         logger.debug('Response: %s', self.get_status().hex(' '))
 

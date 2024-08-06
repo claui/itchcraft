@@ -63,8 +63,8 @@ class UsbBulkTransferDevice(BulkTransferDevice):
                 usb.core.Configuration,
                 device.get_active_configuration(),
             )
-        interface = config[(0, 0)]
 
+        interface = config[(0, 0)]
         self.device = device
         try:
             self.endpoint_out = _find_endpoint(interface, _match_out)
@@ -72,23 +72,29 @@ class UsbBulkTransferDevice(BulkTransferDevice):
             raise BackendInitializationError(
                 f'Outbound endpoint not found for {device.product}',
             ) from ex
+        logger.debug('Found outbound endpoint: %s', self.endpoint_out)
         try:
             self.endpoint_in = _find_endpoint(interface, _match_in)
         except EndpointNotFound as ex:
             raise BackendInitializationError(
                 f'Inbound endpoint not found for {device.product}',
             ) from ex
+        logger.debug('Found inbound endpoint: %s', self.endpoint_in)
 
     def bulk_transfer(
         self,
         request: Union[list[int], bytes, bytearray],
     ) -> bytes:
-        response = array.array('B', bytearray(self.MAX_RESPONSE_LENGTH))
+        buffer = array.array('B', bytearray(self.MAX_RESPONSE_LENGTH))
         assert self.device.write(self.endpoint_out, request) == len(
             request
         )
-        bytes_received = self.device.read(self.endpoint_in, response)
-        return response[:bytes_received].tobytes()
+        num_bytes_received = self.device.read(self.endpoint_in, buffer)
+        response = buffer[:num_bytes_received].tobytes()
+        logger.debug(
+            'Got response: %s (%s)', response.hex(' '), response
+        )
+        return response
 
     @property
     def product_name(self) -> Optional[str]:
