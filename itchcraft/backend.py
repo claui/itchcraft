@@ -8,6 +8,9 @@ from typing import Optional, Union, cast
 import usb.core  # type: ignore
 
 from .errors import BackendInitializationError, EndpointNotFound
+from .logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class BulkTransferDevice(ABC):
@@ -48,18 +51,20 @@ class UsbBulkTransferDevice(BulkTransferDevice):
     endpoint_in: usb.core.Endpoint
 
     def __init__(self, device: usb.core.Device) -> None:
-        try:
-            device.set_configuration()
-        except usb.core.USBError as ex:
-            raise BackendInitializationError(
-                f'Unable to connect to {device.product}: {ex}'
-            ) from ex
-        config = cast(
-            usb.core.Configuration,
-            device.get_active_configuration(),
-        )
-        interface = config[(0, 0)]
+        if (config := _get_config_if_exists(device)) is None:
+            try:
+                device.set_configuration()
+            except usb.core.USBError as ex:
+                raise BackendInitializationError(
+                    f'Unable to connect to {device.product}: {ex}'
+                ) from ex
+            logger.debug('Configuration successful')
+            config = cast(
+                usb.core.Configuration,
+                device.get_active_configuration(),
+            )
 
+        interface = config[(0, 0)]
         self.device = device
         try:
             self.endpoint_out = _find_endpoint(interface, _match_out)
@@ -67,23 +72,29 @@ class UsbBulkTransferDevice(BulkTransferDevice):
             raise BackendInitializationError(
                 f'Outbound endpoint not found for {device.product}',
             ) from ex
+        logger.debug('Found outbound endpoint: %s', self.endpoint_out)
         try:
             self.endpoint_in = _find_endpoint(interface, _match_in)
         except EndpointNotFound as ex:
             raise BackendInitializationError(
                 f'Inbound endpoint not found for {device.product}',
             ) from ex
+        logger.debug('Found inbound endpoint: %s', self.endpoint_in)
 
     def bulk_transfer(
         self,
         request: Union[list[int], bytes, bytearray],
     ) -> bytes:
-        response = array.array('B', bytearray(self.MAX_RESPONSE_LENGTH))
+        buffer = array.array('B', bytearray(self.MAX_RESPONSE_LENGTH))
         assert self.device.write(self.endpoint_out, request) == len(
             request
         )
-        bytes_received = self.device.read(self.endpoint_in, response)
-        return response[:bytes_received].tobytes()
+        num_bytes_received = self.device.read(self.endpoint_in, buffer)
+        response = buffer[:num_bytes_received].tobytes()
+        logger.debug(
+            'Got response: %s (%s)', response.hex(' '), response
+        )
+        return response
 
     @property
     def product_name(self) -> Optional[str]:
@@ -108,8 +119,25 @@ def _find_endpoint(
     return cast(usb.core.Endpoint, endpoint)
 
 
-def _match_in(endpoint: usb.core.Endpoint) -> bool:
-    address = endpoint.bEndpointAddress  # pyright: ignore
+def _get_config_if_exists(
+    device: usb.core.Device,
+) -> Optional[usb.core.Configuration]:
+    try:
+        config = cast(
+            usb.core.Configuration,
+            device.get_active_configuration(),
+        )
+    except usb.core.USBError:
+        logger.debug('Device has no active configuration')
+        config = None
+    else:
+        logger.debug('Device already configured')
+        logger.debug('Active configuration: %s', config)
+    return config
+
+
+def _match_in(device: usb.core.Device) -> bool:
+    address = device.bEndpointAddress  # pyright: ignore
     return bool(
         usb.util.endpoint_direction(address) == usb.util.ENDPOINT_IN
     )

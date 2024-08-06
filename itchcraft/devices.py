@@ -6,7 +6,10 @@ from typing import Any, cast
 import usb.core  # type: ignore
 
 from .device import from_usb_device, BiteHealerMetadata
+from .logging import get_logger
 from .support import SUPPORT_STATEMENTS, SupportStatement, VidPid
+
+logger = get_logger(__name__)
 
 
 def find_bite_healers() -> Iterator[BiteHealerMetadata]:
@@ -24,8 +27,10 @@ def find_bite_healers() -> Iterator[BiteHealerMetadata]:
         vid_pid = VidPid(vid=device.idVendor, pid=device.idProduct)
 
         if (statement := vid_pid_dict.get(vid_pid)) is None:
+            logger.debug('Ignoring USB device %s', vid_pid)
             continue
 
+        logger.debug('Detected bite healer %s', vid_pid)
         yield from_usb_device(
             usb_device=device,
             support_statement=statement,
