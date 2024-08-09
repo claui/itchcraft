@@ -5,7 +5,7 @@ from contextlib import (
     AbstractContextManager,
     nullcontext,
 )
-from typing import Optional, TypedDict, Union
+from typing import Optional, TypedDict
 from unittest.mock import ANY
 
 import pytest
@@ -22,7 +22,7 @@ from itchcraft.prefs import (
     SkinSensitivity,
 )
 from itchcraft.support import SupportStatement
-from itchcraft.types import BiteHealer
+from itchcraft.types import BiteHealer, SizedPayload
 
 
 class StartParams(TypedDict, total=False):
@@ -596,9 +596,7 @@ def test_adult_regular_long(
 
 
 class _DummyUsbBulkTransferDevice(BulkTransferDevice):
-    def bulk_transfer(
-        self, request: Union[list[int], bytes, bytearray]
-    ) -> bytes:
+    def bulk_transfer(self, _request: SizedPayload) -> bytes:
         return b'123456789012'
 
     @property

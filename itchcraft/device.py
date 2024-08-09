@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import functools
 from typing import cast, Literal, Optional, Union
 
-import usb.core  # type: ignore
+import usb.core
 
 from .logging import get_logger
 from .support import SupportStatement

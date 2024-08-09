@@ -2,19 +2,19 @@
 
 from collections.abc import Iterable
 from functools import reduce
-from typing import Optional, Union
+from typing import Optional
 
 from tenacity import retry
 from tenacity.retry import retry_if_exception_type
 from tenacity.stop import stop_after_attempt
 from tenacity.wait import wait_fixed
-import usb.core  # type: ignore
+import usb.core
 
 from .backend import BulkTransferDevice
 from .logging import get_logger
 from .prefs import Preferences
 from .settings import debugMode
-from .types import BiteHealer
+from .types import BiteHealer, SizedPayload
 
 
 RESPONSE_LENGTH = 12
@@ -74,9 +74,7 @@ class HeatItDevice(BiteHealer):
         )
 
     def _command(
-        self,
-        request: Union[list[int], bytes, bytearray],
-        command_name: Optional[str] = None,
+        self, request: SizedPayload, command_name: Optional[str] = None
     ) -> bytes:
         if command_name is not None:
             logger.info('Sending command: %s', command_name)

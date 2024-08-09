@@ -3,7 +3,7 @@
 from collections.abc import Iterator, Generator
 from typing import Any, cast
 
-import usb.core  # type: ignore
+import usb.core
 
 from .device import from_usb_device, BiteHealerMetadata
 from .logging import get_logger

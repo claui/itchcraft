@@ -3,12 +3,14 @@
 from abc import ABC, abstractmethod
 import array
 from collections.abc import Callable
-from typing import Optional, Union, cast
+from typing import Optional
 
-import usb.core  # type: ignore
+import usb.core
+import usb.util
 
 from .errors import BackendInitializationError, EndpointNotFound
 from .logging import get_logger
+from .types import SizedPayload, usb as usb_types
 
 logger = get_logger(__name__)
 
@@ -18,10 +20,7 @@ class BulkTransferDevice(ABC):
     endpoints."""
 
     @abstractmethod
-    def bulk_transfer(
-        self,
-        request: Union[list[int], bytes, bytearray],
-    ) -> bytes:
+    def bulk_transfer(self, request: SizedPayload) -> bytes:
         """Sends a payload via USB bulk transfer and waits for a response
         from the device.
 
@@ -59,10 +58,7 @@ class UsbBulkTransferDevice(BulkTransferDevice):
                     f'Unable to connect to {device.product}: {ex}'
                 ) from ex
             logger.debug('Configuration successful')
-            config = cast(
-                usb.core.Configuration,
-                device.get_active_configuration(),
-            )
+            config = device.get_active_configuration()
 
         interface = config[(0, 0)]
         self.device = device
@@ -84,10 +80,7 @@ class UsbBulkTransferDevice(BulkTransferDevice):
             ) from ex
         logger.debug('Found inbound endpoint: %s', self.endpoint_in)
 
-    def bulk_transfer(
-        self,
-        request: Union[list[int], bytes, bytearray],
-    ) -> bytes:
+    def bulk_transfer(self, request: SizedPayload) -> bytes:
         buffer = array.array('B', bytearray(self.MAX_RESPONSE_LENGTH))
         assert self.device.write(self.endpoint_out, request) == len(
             request
@@ -101,15 +94,15 @@ class UsbBulkTransferDevice(BulkTransferDevice):
 
     @property
     def product_name(self) -> Optional[str]:
-        return cast(Optional[str], self.device.product)
+        return self.device.product
 
     @property
     def serial_number(self) -> Optional[str]:
-        return cast(Optional[str], self.device.serial_number)
+        return self.device.serial_number
 
 
 def _detach_driver_if_needed(
-    device: usb.core.Device, interface_index: int
+    device: usb.core.Device, interface_index: usb_types.InterfaceIndex
 ) -> None:
     if device.is_kernel_driver_active(interface_index):
         logger.debug(
@@ -131,17 +124,14 @@ def _find_endpoint(
         )
     ) is None:
         raise EndpointNotFound('find_descriptor returned None')
-    return cast(usb.core.Endpoint, endpoint)
+    return endpoint
 
 
 def _get_config_if_exists(
     device: usb.core.Device,
 ) -> Optional[usb.core.Configuration]:
     try:
-        config = cast(
-            usb.core.Configuration,
-            device.get_active_configuration(),
-        )
+        config = device.get_active_configuration()
     except usb.core.USBError:
         logger.debug('Device has no active configuration')
         config = None
@@ -151,15 +141,15 @@ def _get_config_if_exists(
     return config
 
 
-def _match_in(device: usb.core.Device) -> bool:
-    address = device.bEndpointAddress  # pyright: ignore
+def _match_in(endpoint: usb.core.Endpoint) -> bool:
+    address = endpoint.bEndpointAddress
     return bool(
         usb.util.endpoint_direction(address) == usb.util.ENDPOINT_IN
     )
 
 
-def _match_out(device: usb.core.Device) -> bool:
-    address = device.bEndpointAddress  # pyright: ignore
+def _match_out(endpoint: usb.core.Endpoint) -> bool:
+    address = endpoint.bEndpointAddress
     return bool(
         usb.util.endpoint_direction(address) == usb.util.ENDPOINT_OUT
     )
