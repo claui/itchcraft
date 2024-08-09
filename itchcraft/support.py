@@ -5,7 +5,7 @@ from contextlib import AbstractContextManager, contextmanager
 from dataclasses import dataclass
 from typing import Callable, NamedTuple, Optional
 
-import usb.core  # type: ignore
+import usb.core
 
 from .backend import UsbBulkTransferDevice
 from .heat_it import HeatItDevice
