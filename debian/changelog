@@ -9,4 +9,4 @@ itchcraft (0.4.1) UNRELEASED; urgency=medium
   * Add typing stubs for pyusb
   * Fix regression for drivers with no detach support
 
- -- Claudia Pellegrino <deb@cpellegrino.de>  Tue, 4 Sep 2024 20:14:16 +0200
+ -- Claudia Pellegrino <deb@cpellegrino.de>  Wed, 4 Sep 2024 20:14:16 +0200
