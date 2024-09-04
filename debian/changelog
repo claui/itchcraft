@@ -1,12 +1,19 @@
-itchcraft (0.3.0~bpo11+1) UNRELEASED; urgency=medium
+itchcraft (0.4.1~bpo11+1) UNRELEASED; urgency=medium
 
   * Work around missing Poetry package on Bullseye
   * Work around missing `myst-parser` on Bullseye
 
- -- Claudia Pellegrino <deb@cpellegrino.de>  Wed, 24 Jul 2024 18:25:11 +0200
+ -- Claudia Pellegrino <deb@cpellegrino.de>  Tue, 4 Sep 2024 20:16:08 +0200
 
-itchcraft (0.3.0) UNRELEASED; urgency=medium
+itchcraft (0.4.1) UNRELEASED; urgency=medium
 
-  * Initial release
+  * Detect and show connected bite healer models
+  * Add support for more models
+  * Make error handling more robust
+  * Bump Debian changelog, fix build deps
+  * Introduce debug mode
+  * Detach driver if interface busy
+  * Add typing stubs for pyusb
+  * Fix regression for drivers with no detach support
 
- -- Claudia Pellegrino <deb@cpellegrino.de>  Tue, 30 Jul 2024 16:00:12 +0200
+ -- Claudia Pellegrino <deb@cpellegrino.de>  Tue, 4 Sep 2024 20:14:16 +0200

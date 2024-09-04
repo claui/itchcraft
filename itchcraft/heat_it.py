@@ -2,18 +2,19 @@
 
 from collections.abc import Iterable
 from functools import reduce
-from typing import Optional, Union
+from typing import Optional
 
 from tenacity import retry
 from tenacity.retry import retry_if_exception_type
 from tenacity.stop import stop_after_attempt
 from tenacity.wait import wait_fixed
-import usb.core  # type: ignore
+import usb.core
 
 from .backend import BulkTransferDevice
 from .logging import get_logger
 from .prefs import Preferences
-from .types import BiteHealer
+from .settings import debugMode
+from .types import BiteHealer, SizedPayload
 
 
 RESPONSE_LENGTH = 12
@@ -22,7 +23,7 @@ logger = get_logger(__name__)
 
 
 class HeatItDevice(BiteHealer):
-    """A heat-it bite healer, configured over USB."""
+    """A “heat it” bite healer, configured over USB."""
 
     device: BulkTransferDevice
 
@@ -73,9 +74,7 @@ class HeatItDevice(BiteHealer):
         )
 
     def _command(
-        self,
-        request: Union[list[int], bytes, bytearray],
-        command_name: Optional[str] = None,
+        self, request: SizedPayload, command_name: Optional[str] = None
     ) -> bytes:
         if command_name is not None:
             logger.info('Sending command: %s', command_name)
@@ -86,13 +85,11 @@ class HeatItDevice(BiteHealer):
     @retry(
         reraise=True,
         retry=retry_if_exception_type(usb.core.USBError),  # type: ignore
-        stop=stop_after_attempt(10),  # type: ignore
+        stop=stop_after_attempt(3 if debugMode else 10),  # type: ignore
         wait=wait_fixed(1),  # type: ignore
     )
     def self_test(self) -> None:
-        """Tries up to five times to test the bootloader and obtain
-        the device status.
-        """
+        """Tests the bootloader and obtains the device status."""
         logger.debug('Response: %s', self.test_bootloader().hex(' '))
         logger.debug('Response: %s', self.get_status().hex(' '))
 

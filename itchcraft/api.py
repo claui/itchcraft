@@ -2,7 +2,11 @@
 
 from . import prefs
 from .devices import find_bite_healers
-from .errors import CliError, BiteHealerError
+from .errors import (
+    BackendInitializationError,
+    BiteHealerError,
+    CliError,
+)
 from .format import format_table
 from .logging import get_logger
 from .prefs import (
@@ -66,5 +70,7 @@ class Api:
         )
         try:
             start_with_preferences(preferences)
+        except BackendInitializationError as e:
+            raise CliError(e) from e
         except BiteHealerError as e:
             raise CliError(e) from e

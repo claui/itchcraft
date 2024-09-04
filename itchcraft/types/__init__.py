@@ -1,8 +1,13 @@
 """Types used in several places"""
 
 from abc import ABC, abstractmethod
+from collections.abc import Collection
+from typing import Union
 
-from .prefs import Preferences
+from ..prefs import Preferences
+
+
+SizedPayload = Union[bytes, Collection[int]]
 
 
 class BiteHealer(ABC):

@@ -5,7 +5,7 @@ from contextlib import AbstractContextManager, contextmanager
 from dataclasses import dataclass
 from typing import Callable, NamedTuple, Optional
 
-import usb.core  # type: ignore
+import usb.core
 
 from .backend import UsbBulkTransferDevice
 from .heat_it import HeatItDevice
@@ -41,6 +41,12 @@ class VidPid(NamedTuple):
 
     vid: int
     pid: int
+
+    def __str__(self) -> str:
+        return (
+            f'{self.vid:04x}:{self.pid:04x}'
+            + f' (VID {self.vid}, PID {self.pid})'
+        )
 
 
 @contextmanager
