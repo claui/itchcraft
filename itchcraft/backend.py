@@ -104,13 +104,26 @@ class UsbBulkTransferDevice(BulkTransferDevice):
 def _detach_driver_if_needed(
     device: usb.core.Device, interface_index: usb_types.InterfaceIndex
 ) -> None:
-    if device.is_kernel_driver_active(interface_index):
+    try:
+        want_to_detach_driver = device.is_kernel_driver_active(
+            interface_index
+        )
+    except NotImplementedError:
         logger.debug(
-            'Detaching driver from interface #%d',
+            'Note: unable to detach driver for interface #%d; proceeding',
             interface_index,
         )
-        device.detach_kernel_driver(interface_index)
-        logger.debug('Driver successfully detached')
+        want_to_detach_driver = False
+
+    if not want_to_detach_driver:
+        return
+
+    logger.debug(
+        'Detaching driver from interface #%d',
+        interface_index,
+    )
+    device.detach_kernel_driver(interface_index)
+    logger.debug('Driver successfully detached')
 
 
 def _find_endpoint(
