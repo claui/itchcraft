@@ -24,24 +24,24 @@ at [github.com/pyenv/pyenv](https://github.com/pyenv/pyenv#basic-github-checkout
 
 To verify your `pyenv` is working, run:
 
-```
+```shell
 pyenv --version
 ```
 
 ### Checking your system-wide Python installation
 
-Make sure you have Python 3.7 or higher installed on your system
+Make sure you have Python 3.8 or higher installed on your system
 and available in your PATH.
 
 To check, run:
 
-```
+```shell
 python --version
 ```
 
 If that fails, try:
 
-```
+```shell
 python3 --version
 ```
 
@@ -62,7 +62,7 @@ described in Poetry’s documentation.
 
 To verify Poetry is working, run:
 
-```
+```shell
 poetry --version
 ```
 
@@ -86,27 +86,25 @@ To update your dependencies after a `git pull`, run `poetry update`.
 
 To see a list of available tasks, run: `poetry run poe tasks`
 
-## Running Itchcraft
+### Running Itchcraft
 
 To execute Itchcraft, run:
 
-```
+```shell
 poetry run poe cli
 ```
-
-## Contributing to Itchcraft
 
 ### Running the tests
 
 To execute the tests, run:
 
-```
+```shell
 poetry run poe tests
 ```
 
 To execute a single test, run e. g.:
 
-```
+```shell
 poetry run poe tests -vv tests/test_api.py::test_hello
 ```
 
@@ -114,7 +112,7 @@ poetry run poe tests -vv tests/test_api.py::test_hello
 
 To execute the linter, run:
 
-```
+```shell
 poetry run poe linter
 ```
 
@@ -122,7 +120,7 @@ poetry run poe linter
 
 To execute the static type check, run:
 
-```
+```shell
 poetry run poe typecheck
 ```
 
@@ -131,7 +129,7 @@ poetry run poe typecheck
 If you have [act](https://github.com/nektos/act) installed and a
 Docker daemon active, run:
 
-```sh
+```shell
 act
 ```
 
@@ -139,7 +137,7 @@ act
 
 To generate project documentation and open it in your browser, run:
 
-```
+```shell
 poetry run poe doc
 ```
 
@@ -149,7 +147,7 @@ poetry run poe doc
 
 If you get errors after a Git pull, refresh your dependencies:
 
-```
+```shell
 poetry update
 ```
 
@@ -158,7 +156,7 @@ poetry update
 If you’ve run `poetry update` and you still get errors, rebuild
 the virtual environment:
 
-```
+```shell
 poetry install
 ```
 
@@ -166,6 +164,6 @@ poetry install
 
 To check Itchcraft’s dependencies for compatible updates, run:
 
-```
+```shell
 poetry update --dry-run
 ```
