@@ -59,10 +59,11 @@ The default is `sensitive`, the safer setting of the two.
 
 Itchcraft supports the following environment variable:
 
-`DEBUG`
+`ITCHCRAFT_DEBUG`
 : If set to a non-zero value, causes Itchcraft to enable debug-level
-: logging. Also decreases some retry counters and prints stack traces
-: for errors where it normally wouldn’t.
+: logging.
+: Also decreases some retry counters and prints stack traces for errors
+: where it normally would not.
 
 # Monitoring the bite healer’s state once activated
 

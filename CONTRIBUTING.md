@@ -17,7 +17,7 @@ the exact Python version required by Itchcraft,
 regardless of your system Python.
 
 To install `pyenv` on Linux or WSL2, first make sure Python 3 is
-installed. Then follow the *Basic GitHub Checkout* method described
+installed. Then follow the _Basic GitHub Checkout_ method described
 at [github.com/pyenv/pyenv](https://github.com/pyenv/pyenv#basic-github-checkout).
 
 #### Checking your system-wide pyenv installation
@@ -135,10 +135,16 @@ act
 
 ### Generating project documentation
 
-To generate project documentation and open it in your browser, run:
+To generate project documentation, run:
 
 ```shell
 poetry run poe doc
+```
+
+To open the generated documentation with `man`, run:
+
+```shell
+poetry run poe man
 ```
 
 ## Maintenance
