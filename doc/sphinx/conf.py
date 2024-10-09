@@ -7,6 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Itchcraft'
+executable_name = 'itchcraft'
 author = 'Claudia Pellegrino <clau@tiqua.de>'
 description = 'Tech demo for interfacing with heat-based USB insect bite healers'
 
@@ -30,7 +31,7 @@ exclude_patterns = []
 
 man_pages = [(
     'index',
-    project.lower(),
+    executable_name,
     description,
     [author],
     1,
