@@ -3,7 +3,6 @@
     "project_title": "Itchcraft",
     "pypi_package_name": "itchcraft",
     "python_package_name": "itchcraft",
-    "project_slug": "itchcraft",
     "project_description": "Tech demo for interfacing with heat-based USB insect bite healers",
     "first_module_name": "api",
     "project_version": "0.1.0",
@@ -44,7 +43,7 @@
     "copyright_holder_full_name": "{{ cookiecutter.author_full_name }}",
     "github_username": "claui",
     "include_executable": "y",
-    "executable_name": "{{ cookiecutter.project_slug.replace('_', '-') }}",
+    "executable_name": "{{ cookiecutter.pypi_package_name }}",
     "install_dependencies_now": "y"
   }
 }
