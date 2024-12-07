@@ -1,6 +1,8 @@
 {
   "cookiecutter": {
     "project_title": "Itchcraft",
+    "pypi_package_name": "itchcraft",
+    "python_package_name": "itchcraft",
     "project_slug": "itchcraft",
     "project_description": "Tech demo for interfacing with heat-based USB insect bite healers",
     "first_module_name": "api",
@@ -27,7 +29,8 @@
   },
   "_cookiecutter": {
     "project_title": "",
-    "project_slug": "{{ cookiecutter.project_title.lower().replace(' ', '_').replace('-', '_') }}",
+    "pypi_package_name": "{{ cookiecutter.project_title.lower().replace(' ', '-').replace('_', '-') }}",
+    "python_package_name": "{{ cookiecutter.pypi_package_name.replace('-', '_') }}",
     "project_description": "",
     "first_module_name": "api",
     "project_version": "0.1.0",
