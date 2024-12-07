@@ -135,13 +135,19 @@ act
 
 ### Generating project documentation
 
-To generate project documentation, run:
+To generate project documentation (HTML and man page), run:
 
 ```shell
 poetry run poe doc
 ```
 
-To open the generated documentation with `man`, run:
+To open the generated HTML documentation in your browser, run:
+
+```shell
+poetry run poe html
+```
+
+To open the generated manual page in your terminal, run:
 
 ```shell
 poetry run poe man
@@ -172,4 +178,12 @@ To check Itchcraft’s dependencies for compatible updates, run:
 
 ```shell
 poetry update --dry-run
+```
+
+### Updating requirements file for Read the Docs
+
+To update the `doc/requirements.txt` file for Read the Docs, run:
+
+```shell
+poetry export --only doc --output doc/requirements.txt
 ```

@@ -12,6 +12,8 @@ Build-Depends: debhelper-compat (= 13),
                python3-pytest <!nocheck>,
                python3-pytest-mock <!nocheck>,
                python3-sphinx,
+               python3-sphinx-autoapi,
+               python3-sphinx-rtd-theme,
                python3-tenacity <!nocheck>,
                python3-usb <!nocheck>
 Standards-Version: 4.5.1
