@@ -56,13 +56,18 @@ def skip_module(app, what, name, obj, skip, options):
     if what == 'method':
         return skip or name.endswith('.__str__')
     if what == 'module':
-        return skip or name in [
-            'itchcraft.__main__',
-            'itchcraft.cli',
-            'itchcraft.fire_workarounds',
-            'itchcraft.version',
-            'itchcraft.settings',
-        ]
+        return (
+            skip
+            or name
+            in [
+                'itchcraft.__main__',
+                'itchcraft.cli',
+                'itchcraft.fire_workarounds',
+                'itchcraft.version',
+                'itchcraft.settings',
+            ]
+            or obj.obj['relative_path'].startswith('itchcraft/stubs')
+        )
     return skip
 
 
@@ -77,6 +82,7 @@ exclude_patterns = [
     '**/itchcraft/fire_workarounds/**',
     '**/itchcraft/version/**',
     '**/itchcraft/settings/**',
+    '**/itchcraft/stubs/**',
 ]
 
 # Man page output
