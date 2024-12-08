@@ -6,7 +6,7 @@ Documentation for Itchcraft
    :caption: Contents
 
    usage
-   autoapi/index
+   api/index
 
 .. include:: ../../README.md
    :parser: myst_parser.sphinx_

@@ -36,6 +36,7 @@ autoapi_options = [
     'special-members',
     'imported-members',
 ]
+autoapi_root = 'api'
 autoapi_type = 'python'
 autodoc_typehints = 'description'
 

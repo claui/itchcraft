@@ -201,7 +201,7 @@ See
 or `man itchcraft` for details.
 
 You can also browse the
-[API reference on Read the Docs](https://itchcraft.readthedocs.io/en/stable/autoapi/itchcraft/)
+[API reference on Read the Docs](https://itchcraft.readthedocs.io/en/stable/api/itchcraft/)
 for details.
 
 ## Contributing to Itchcraft
