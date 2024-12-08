@@ -41,7 +41,11 @@ class BulkTransferDevice(ABC):
 
 
 class UsbBulkTransferDevice(BulkTransferDevice):
-    """USB device with two bulk transfer endpoints."""
+    """USB device with two bulk transfer endpoints.
+
+    :param device:
+        the PyUSB device with which to initiate the bulk transfer.
+    """
 
     MAX_RESPONSE_LENGTH = 12
 
