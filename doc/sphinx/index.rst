@@ -1,9 +1,12 @@
-Welcome to Itchcraft's documentation!
-=====================================
+Documentation for Itchcraft
+===========================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
-.. include:: ../../USAGE.md
+   usage
+   autoapi/index
+
+.. include:: ../../README.md
    :parser: myst_parser.sphinx_

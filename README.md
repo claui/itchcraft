@@ -196,8 +196,13 @@ Direct your favorite
 itchcraft COMMAND
 ```
 
-See [`USAGE.md`](https://github.com/claui/itchcraft/blob/main/USAGE.md)
+See
+[`USAGE.md`](https://github.com/claui/itchcraft/blob/main/USAGE.md)
 or `man itchcraft` for details.
+
+You can also browse the
+[API reference on Read the Docs](https://itchcraft.readthedocs.io/en/stable/autoapi/itchcraft/)
+for details.
 
 ## Contributing to Itchcraft
 
@@ -254,7 +259,7 @@ For medical advice, you should always consult a doctor. If you’re unsure
 whether you can safely use a bite healer, consult with a healthcare
 professional before using Itchcraft or any bite healer.
 
-See also section 8 of the [LICENSE](LICENSE):
+See also section 8 of the [LICENSE](https://raw.githubusercontent.com/claui/itchcraft/refs/heads/main/LICENSE):
 
 > Limitation of Liability. In no event and under no legal theory,
 > whether in tort (including negligence), contract, or otherwise,
@@ -282,4 +287,4 @@ Copyright (c) 2024 Claudia Pellegrino
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
-For a copy of the License, see [LICENSE](LICENSE).
+For a copy of the License, see [LICENSE](https://raw.githubusercontent.com/claui/itchcraft/refs/heads/main/LICENSE).
