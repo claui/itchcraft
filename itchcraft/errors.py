@@ -2,7 +2,7 @@
 
 
 class CliError(Exception):
-    """An user-facing error message."""
+    """A user-facing error message."""
 
 
 class BackendInitializationError(Exception):

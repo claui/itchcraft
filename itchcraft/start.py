@@ -13,11 +13,10 @@ logger = get_logger(__name__)
 
 
 def start_with_preferences(preferences: Preferences) -> None:
-    """Activates (i.e. heats up) a connected USB bite healer for
-    demonstration purposes.
+    """Activates (i.e. heats up) a connected USB bite healer for demonstration purposes.
 
     :param preferences:
-        User preferences for the settings of the bite healer.
+        how the user wants the device to be configured.
     """
     logger.warning('This app is only a tech demo')
     logger.warning('and NOT for medical use.')

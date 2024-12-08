@@ -6,7 +6,7 @@
 /debian/itchcraft.*.debhelper
 /debian/itchcraft.substvars
 /dist/
-/doc/sphinx/autoapi/
+/doc/sphinx/api/
 /.pc/
 /.venv/
 *.egg-info

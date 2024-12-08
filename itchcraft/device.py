@@ -98,7 +98,19 @@ def from_usb_device(
     usb_device: usb.core.Device,
     support_statement: SupportStatement,
 ) -> BiteHealerMetadata:
-    """Creates a metadata object from a USB device."""
+    """Creates a metadata object from a USB device.
+
+    :param usb_device:
+        the PyUSB device to be queried for metadata.
+
+    :param support_statement:
+        Describes the level of support that Itchcraft offers for
+        `usb_device`.
+
+    :return:
+        a metadata object that unifies info from both the PyUSB device
+        and `support_statement`.
+    """
 
     def try_get_usb_attribute(
         name: Literal['product', 'serial_number'],
