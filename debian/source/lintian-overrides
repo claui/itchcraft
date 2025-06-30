@@ -1,0 +1,3 @@
+# NMUs aren’t a thing around here.
+source: no-nmu-in-changelog
+source: source-nmu-has-incorrect-version-number
