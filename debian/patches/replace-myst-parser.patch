@@ -1,3 +1,6 @@
+Replace `myst-parser` with `pandoc`.
+
+The former isn’t available on bullseye/byzantium but the latter is.
 --- a/.github/workflows/ci.yml
 +++ b/.github/workflows/ci.yml
 @@ -60,6 +60,3 @@
