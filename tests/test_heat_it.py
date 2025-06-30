@@ -5,11 +5,12 @@ from contextlib import (
     AbstractContextManager,
     nullcontext,
 )
-from typing import Optional, TypedDict
+from typing import Any, cast, Optional, TypedDict
 from unittest.mock import ANY
 
 import pytest
 import pytest_mock
+from typing_extensions import TypeAlias
 
 from itchcraft import Api, devices
 from itchcraft.backend import BulkTransferDevice
@@ -23,6 +24,18 @@ from itchcraft.prefs import (
 )
 from itchcraft.support import SupportStatement
 from itchcraft.types import BiteHealer, SizedPayload
+
+
+# pytest_mock doesn’t export `MockType` before v3.14.0
+# https://github.com/pytest-dev/pytest-mock/commit/366966bff1e3ca2e1455d704dd59991da5593877
+MockType: TypeAlias = cast(
+    TypeAlias,
+    getattr(
+        pytest_mock,
+        'MockType',
+        Any,
+    ),
+)
 
 
 class StartParams(TypedDict, total=False):
@@ -70,7 +83,7 @@ def fixture_bulk_transfer(
     mocker: pytest_mock.MockerFixture,
     monkeypatch: pytest.MonkeyPatch,
     find_dummy_bite_healer: Iterator[SupportedBiteHealerMetadata],
-) -> Iterator[pytest_mock.MockType]:
+) -> Iterator[MockType]:
     monkeypatch.setattr(
         devices, 'find_bite_healers', find_dummy_bite_healer
     )
@@ -81,7 +94,7 @@ def fixture_bulk_transfer(
     assert bulk_transfer.call_count == 3
 
 
-def test_no_preferences(bulk_transfer: pytest_mock.MockType) -> None:
+def test_no_preferences(bulk_transfer: MockType) -> None:
     Api().start()
     bulk_transfer.assert_called_with(
         ANY, [0xFF, 0x08, 0x00, 0x00, 0x08]
@@ -131,7 +144,7 @@ def test_no_preferences(bulk_transfer: pytest_mock.MockType) -> None:
     ],
 )
 def test_child_sensitive_short(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -178,7 +191,7 @@ def test_child_sensitive_short(
     ],
 )
 def test_child_sensitive_medium(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -225,7 +238,7 @@ def test_child_sensitive_medium(
     ],
 )
 def test_child_sensitive_long(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -267,7 +280,7 @@ def test_child_sensitive_long(
     ],
 )
 def test_adult_sensitive_short(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -307,7 +320,7 @@ def test_adult_sensitive_short(
     ],
 )
 def test_adult_sensitive_medium(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -347,7 +360,7 @@ def test_adult_sensitive_medium(
     ],
 )
 def test_adult_sensitive_long(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -390,7 +403,7 @@ def test_adult_sensitive_long(
     ],
 )
 def test_child_regular_short(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -431,7 +444,7 @@ def test_child_regular_short(
     ],
 )
 def test_child_regular_medium(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -472,7 +485,7 @@ def test_child_regular_medium(
     ],
 )
 def test_child_regular_long(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -513,7 +526,7 @@ def test_child_regular_long(
     ],
 )
 def test_adult_regular_short(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -549,7 +562,7 @@ def test_adult_regular_short(
     ],
 )
 def test_adult_regular_medium(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
@@ -585,7 +598,7 @@ def test_adult_regular_medium(
     ],
 )
 def test_adult_regular_long(
-    bulk_transfer: pytest_mock.MockType,
+    bulk_transfer: MockType,
     preferences: StartParams,
 ) -> None:
     Api().start(**preferences)
