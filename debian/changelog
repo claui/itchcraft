@@ -1,3 +1,10 @@
+itchcraft (0.4.2-1) UNRELEASED; urgency=medium
+
+  * Convert to non-native package in an attempt to simplify handling
+    backports with patches
+
+ -- Claudia Pellegrino <deb@cpellegrino.de>  Wed, 4 Sep 2024 20:16:08 +0200
+
 itchcraft (0.4.1) UNRELEASED; urgency=medium
 
   * Detect and show connected bite healer models
