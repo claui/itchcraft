@@ -22,6 +22,9 @@
     68,
     72
   ],
+  "files.associations": {
+    "README.source": "markdown"
+  },
   "files.exclude": {
     "**/.git": true,
     "**/.mypy_cache": true,

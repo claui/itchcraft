@@ -1,0 +1,19 @@
+# Notes for building the Debian package
+
+## Compatibility with gbp-buildpackage and sbuild
+
+This package has been confirmed to build correctly using the following
+command line:
+
+```bash
+gbp buildpackage --git-ignore-branch --git-builder='sbuild --no-clean-source -d bookworm' --git-upstream-tree=@
+```
+
+## Lintian options for sbuild
+
+This package passes Lintian with the following config in `~/.sbuildrc`:
+
+```perl
+$run_lintian = 1;
+$lintian_opts = ['--display-info', '--verbose', '--fail-on', 'error,warning', '--info', '--suppress-tags', 'bad-distribution-in-changes-file,changelog-distribution-does-not-match-changes-file,unreleased-changes'];
+```
