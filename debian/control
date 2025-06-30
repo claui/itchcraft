@@ -27,4 +27,7 @@ Package: itchcraft
 Architecture: all
 Depends: ${python3:Depends}, ${misc:Depends}
 Description: Tech demo for interfacing with heat-based USB insect bite healers
- This package installs the utility and documentation for Python 3.
+ Itchcraft is a technology demonstration for Linux-based smartphones
+ to interface with commercial USB bite-healers that work by locally
+ heating up human skin.
+ Includes a command-line tool and Python API.
