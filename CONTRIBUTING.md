@@ -17,31 +17,31 @@ the exact Python version required by Itchcraft,
 regardless of your system Python.
 
 To install `pyenv` on Linux or WSL2, first make sure Python 3 is
-installed. Then follow the *Basic GitHub Checkout* method described
+installed. Then follow the _Basic GitHub Checkout_ method described
 at [github.com/pyenv/pyenv](https://github.com/pyenv/pyenv#basic-github-checkout).
 
 #### Checking your system-wide pyenv installation
 
 To verify your `pyenv` is working, run:
 
-```
+```shell
 pyenv --version
 ```
 
 ### Checking your system-wide Python installation
 
-Make sure you have Python 3.7 or higher installed on your system
+Make sure you have Python 3.8 or higher installed on your system
 and available in your PATH.
 
 To check, run:
 
-```
+```shell
 python --version
 ```
 
 If that fails, try:
 
-```
+```shell
 python3 --version
 ```
 
@@ -62,7 +62,7 @@ described in Poetry’s documentation.
 
 To verify Poetry is working, run:
 
-```
+```shell
 poetry --version
 ```
 
@@ -86,27 +86,25 @@ To update your dependencies after a `git pull`, run `poetry update`.
 
 To see a list of available tasks, run: `poetry run poe tasks`
 
-## Running Itchcraft
+### Running Itchcraft
 
 To execute Itchcraft, run:
 
-```
+```shell
 poetry run poe cli
 ```
-
-## Contributing to Itchcraft
 
 ### Running the tests
 
 To execute the tests, run:
 
-```
+```shell
 poetry run poe tests
 ```
 
 To execute a single test, run e. g.:
 
-```
+```shell
 poetry run poe tests -vv tests/test_api.py::test_hello
 ```
 
@@ -114,7 +112,7 @@ poetry run poe tests -vv tests/test_api.py::test_hello
 
 To execute the linter, run:
 
-```
+```shell
 poetry run poe linter
 ```
 
@@ -122,7 +120,7 @@ poetry run poe linter
 
 To execute the static type check, run:
 
-```
+```shell
 poetry run poe typecheck
 ```
 
@@ -131,16 +129,28 @@ poetry run poe typecheck
 If you have [act](https://github.com/nektos/act) installed and a
 Docker daemon active, run:
 
-```sh
+```shell
 act
 ```
 
 ### Generating project documentation
 
-To generate project documentation and open it in your browser, run:
+To generate project documentation (HTML and man page), run:
 
-```
+```shell
 poetry run poe doc
+```
+
+To open the generated HTML documentation in your browser, run:
+
+```shell
+poetry run poe html
+```
+
+To open the generated manual page in your terminal, run:
+
+```shell
+poetry run poe man
 ```
 
 ## Maintenance
@@ -149,7 +159,7 @@ poetry run poe doc
 
 If you get errors after a Git pull, refresh your dependencies:
 
-```
+```shell
 poetry update
 ```
 
@@ -158,7 +168,7 @@ poetry update
 If you’ve run `poetry update` and you still get errors, rebuild
 the virtual environment:
 
-```
+```shell
 poetry install
 ```
 
@@ -166,6 +176,14 @@ poetry install
 
 To check Itchcraft’s dependencies for compatible updates, run:
 
-```
+```shell
 poetry update --dry-run
+```
+
+### Updating requirements file for Read the Docs
+
+To update the `doc/requirements.txt` file for Read the Docs, run:
+
+```shell
+poetry export --only doc --output doc/requirements.txt
 ```

@@ -23,7 +23,7 @@ logger = get_logger(__name__)
 
 # pylint: disable=too-few-public-methods
 class Api:
-    """Tech demo for interfacing with heat-based USB insect bite healers"""
+    """Tech demo for interfacing with heat-based USB insect bite healers."""
 
     # pylint: disable=no-self-use
     def info(self) -> None:

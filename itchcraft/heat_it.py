@@ -23,7 +23,11 @@ logger = get_logger(__name__)
 
 
 class HeatItDevice(BiteHealer):
-    """A “heat it” bite healer, configured over USB."""
+    """A “heat it” bite healer, configured over USB.
+
+    :param device:
+        the backend object to which to delegate the USB bulk transfer.
+    """
 
     device: BulkTransferDevice
 
@@ -43,6 +47,9 @@ class HeatItDevice(BiteHealer):
     def msg_start_heating(self, preferences: Preferences) -> bytes:
         """Issues a `MSG_START_HEATING` command and returns the
         response.
+
+        :param preferences:
+            how the user wants the device to be configured.
         """
 
         def duration_code() -> int:
@@ -94,7 +101,11 @@ class HeatItDevice(BiteHealer):
         logger.debug('Response: %s', self.get_status().hex(' '))
 
     def start_with_preferences(self, preferences: Preferences) -> None:
-        """Tells the device to start heating up."""
+        """Tells the device to start heating up.
+
+        :param preferences:
+            how the user wants the device to be configured.
+        """
         logger.debug(
             'Response: %s', self.msg_start_heating(preferences).hex(' ')
         )

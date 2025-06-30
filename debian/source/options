@@ -1,1 +1,1 @@
-extend-diff-ignore = "^[^/]*[.]egg-info/"
+extend-diff-ignore = "__pycache__|[.].*_cache|^([^/]*[.]egg-info/|[.]doctrees/|[.]venv/|build/)"

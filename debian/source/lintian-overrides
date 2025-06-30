@@ -1,0 +1,13 @@
+# NMUs aren’t a thing around here.
+source: no-nmu-in-changelog
+source: source-nmu-has-incorrect-version-number
+
+# This used to be a native package.
+# I changed the version string to non-native after v0.4.1, so I can
+# do proper backports with patches.
+source: odd-historical-debian-changelog-version
+
+# To simplify things, the package is non-native on all branches,
+# even though not all branches make modifications to the upstream
+# source.
+source: no-debian-changes

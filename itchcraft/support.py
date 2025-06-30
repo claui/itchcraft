@@ -1,4 +1,4 @@
-"""Declaring supported bite healers"""
+"""Database of supported bite healers."""
 
 from collections.abc import Iterator
 from contextlib import AbstractContextManager, contextmanager
@@ -14,33 +14,45 @@ from .types import BiteHealer
 
 @dataclass(frozen=True)
 class SupportStatement:
-    """Statement that establishes whether or not a given combination
+    """Describes the level of support that Itchcraft offers for a given device.
+
+    A metadata object that establishes whether or not a given combination
     of vendor ID (VID) and product id (PID) is a supported bite healer,
     and which model it is."""
 
     vid: int
-    """USB vendor ID"""
+    """The USB vendor ID."""
     pid: int
-    """USB product ID"""
+    """The USB product ID."""
     vendor_name: str
-    """Canonical vendor name from Itchcraft’s point of view"""
+    """The canonical vendor name from Itchcraft’s point of view."""
     product_name: str
-    """Canonical product name from Itchcraft’s point of view"""
+    """The canonical product name from Itchcraft’s point of view."""
     supported: bool = True
-    """Whether or not Itchcraft supports this model"""
+    """Whether or not Itchcraft supports this model."""
     comment: Optional[str] = None
-    """Additional comments on the support status of this model"""
+    """Additional comments on the support status of this model."""
     connection_supplier: Optional[
         Callable[[usb.core.Device], AbstractContextManager[BiteHealer]]
     ] = None
-    """Callable that establishes a connection to this model"""
+    """An optional :py:class:`~typing.Callable` that, when invoked,
+    establishes a connection to an attached device of this model.
+
+    :param usb_device:
+        a PyUSB device to which to connect.
+
+    :return:
+        a context manager representing a :py:class:`~.types.BiteHealer`.
+    """
 
 
 class VidPid(NamedTuple):
     """Tuple of USB vendor ID (VID) and product ID (PID)."""
 
     vid: int
+    """The USB vendor ID."""
     pid: int
+    """The USB product ID."""
 
     def __str__(self) -> str:
         return (
@@ -174,3 +186,4 @@ SUPPORT_STATEMENTS: list[SupportStatement] = [
         """,
     ),
 ]
+"""Hard-coded database of support statements for various bite healer models."""

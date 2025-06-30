@@ -20,36 +20,20 @@
       }
     },
     {
-      "label": "Itchcraft: Run hello",
+      "label": "Itchcraft: Show list of attached USB bite healers",
       "type": "shell",
       "command": "poetry",
       "args": [
         "run",
         "poe",
-        "hello"
+        "cli",
+        "info"
       ],
       "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "presentation": {
-        "clear": true,
-        "showReuseMessage": false
-      }
-    },
-    {
-      "label": "Itchcraft: Run hello 'Claudia Pellegrino'",
-      "type": "shell",
-      "command": "poetry",
-      "args": [
-        "run",
-        "poe",
-        "hello",
-        "Claudia Pellegrino"
-      ],
-      "problemMatcher": [],
-      "group": "build",
       "presentation": {
         "clear": true,
         "showReuseMessage": false
