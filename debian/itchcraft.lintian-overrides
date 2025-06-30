@@ -1,0 +1,3 @@
+# False positive in Lintian.
+# In Python, `entry_points.txt` is a machine-readable API spec file.
+package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/*.dist-info/entry_points.txt
