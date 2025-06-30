@@ -6,3 +6,8 @@ source: source-nmu-has-incorrect-version-number
 # I changed the version string to non-native after v0.4.1, so I can
 # do proper backports with patches.
 source: odd-historical-debian-changelog-version
+
+# To simplify things, the package is non-native on all branches,
+# even though not all branches make modifications to the upstream
+# source.
+source: no-debian-changes
