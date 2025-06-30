@@ -16,7 +16,7 @@ Build-Depends: debhelper-compat (= 13),
                python3-sphinx-rtd-theme,
                python3-tenacity <!nocheck>,
                python3-usb <!nocheck>
-Standards-Version: 4.5.1
+Standards-Version: 4.6.2
 Homepage: https://github.com/claui/itchcraft
 Vcs-Browser: https://github.com/claui/itchcraft
 Vcs-Git: https://github.com/claui/itchcraft.git
