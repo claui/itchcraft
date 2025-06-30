@@ -1,3 +1,7 @@
 # False positive in Lintian.
 # In Python, `entry_points.txt` is a machine-readable API spec file.
 package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/*.dist-info/entry_points.txt
+
+# Acknowledge dh-python issue 969352.
+# See also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=969352
+file-references-package-build-path usr/lib/python3/dist-packages/*.dist-info/RECORD
