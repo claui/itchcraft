@@ -11,5 +11,6 @@ export PYBUILD_SYSTEM=flit
 
 override_dh_auto_build:
 	dh_auto_build
+	pandoc -o debian/README.rst --shift-heading-level-by=1 README.md
 	pandoc -o debian/USAGE.rst --shift-heading-level-by=1 USAGE.md
 	PYTHONPATH=. python3 -m sphinx -NW -b man doc/sphinx build/man
