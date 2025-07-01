@@ -8,7 +8,7 @@ The former isn’t available on bullseye/byzantium but the latter is.
        - name: Run unit tests
          run: poetry run poe tests
 -
--      - name: Run man page generator
+-      - name: Run man page and HTML documentation generator
 -        run: poetry run poe doc
 --- a/.gitignore
 +++ b/.gitignore
@@ -18,23 +18,32 @@ The former isn’t available on bullseye/byzantium but the latter is.
  /debian/itchcraft.substvars
 +/debian/*.rst
  /dist/
+ /doc/sphinx/api/
  /.pc/
- /.venv/
 --- a/doc/sphinx/conf.py
 +++ b/doc/sphinx/conf.py
-@@ -14,7 +14,6 @@
- # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+@@ -22,7 +22,6 @@
  
  extensions = [
+     'autoapi.extension',
 -    'myst_parser',
      'sphinx.ext.autodoc',
-     'sphinx.ext.napoleon',
  ]
+ 
 --- a/doc/sphinx/index.rst
 +++ b/doc/sphinx/index.rst
-@@ -5,5 +5,4 @@
-    :maxdepth: 2
-    :caption: Contents:
+@@ -8,5 +8,4 @@
+    usage
+    api/index
+ 
+-.. include:: ../../README.md
+-   :parser: myst_parser.sphinx_
++.. include:: ../../debian/README.rst
+--- a/doc/sphinx/usage.rst
++++ b/doc/sphinx/usage.rst
+@@ -1,5 +1,4 @@
+ Usage
+ =====
  
 -.. include:: ../../USAGE.md
 -   :parser: myst_parser.sphinx_

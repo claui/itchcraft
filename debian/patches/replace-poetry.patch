@@ -74,15 +74,7 @@ Additional workarounds required for Flit v3.0.0:
  
  [tool.mypy]
  check_untyped_defs = true
-@@ -45,7 +87,6 @@
- mypy = ">=1.8"
- myst-parser = ">=2.0.0"
- pdoc = ">=14.0"
--poethepoet = ">=0.24"
- pylint = ">=3.0"
- pytest = "*"
- pytest-mock = "*"
-@@ -55,29 +96,6 @@
+@@ -61,34 +103,6 @@
  [tool.poetry.scripts]
  itchcraft = "itchcraft.cli:run"
  
@@ -94,11 +86,16 @@ Additional workarounds required for Flit v3.0.0:
 -tasks.help = "List available tasks"
 -cli.script = "itchcraft.cli:run"
 -cli.help = "Run command line interface"
--doc.cmd = "sphinx-build -aqEW -b man doc/sphinx build/man"
+-doc.shell = """
+-    set -ex
+-    rm -rf build/html build/man
+-    sphinx-build -aqEW -b html doc/sphinx build/html
+-    sphinx-build -qW -b man doc/sphinx build/man
+-"""
 -doc.help = "Generate documentation"
 -hello.script = "itchcraft.cli:run('hello')"
 -hello.help = "Run hello"
--html.cmd = "pdoc itchcraft !itchcraft.settings"
+-html.script = "webbrowser:open('build/html/index.html')"
 -html.help = "Browse HTML documentation"
 -linter.cmd = "pylint --enable-all-extensions itchcraft tests"
 -linter.help = "Check for style violations"
